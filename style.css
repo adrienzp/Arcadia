@@ -209,6 +209,11 @@ nav.on-dark .nav-links a:hover { color: var(--bois-clair); }
 .jour { color: rgba(240,235,226,0.6); font-weight: 300; }
 .heure { color: var(--creme); font-weight: 400; }
 .heure.ferme { color: rgba(240,235,226,0.3); }
+.horaires-light .jour { color: var(--texte-doux); }
+.horaires-light .heure { color: var(--terre); }
+.horaires-light .heure.ferme { color: rgba(122,107,93,0.4); }
+.horaires-light .horaires-table-row { border-bottom-color: rgba(196,137,90,0.2); }
+.horaires-light .horaires-table-row:first-child { border-top-color: rgba(196,137,90,0.2); }
 .horaires-infos { margin-top: 40px; }
 .info-item { display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start; }
 .info-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
