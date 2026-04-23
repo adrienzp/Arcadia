@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcadia — Restaurant à Lille</title>
+<meta name="description" content="Arcadia, restaurant à Lille. Cuisine fraîche, locale et de saison. Réservez votre table.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="on-dark">
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Accueil</a></li>
+    <li><a href="menu.html">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">
+    Arcadia
+    <small>Restaurant · Lille</small>
+  </a>
+  <ul class="nav-links" style="justify-content:flex-end;">
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="reservation.html" class="nav-reserver">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Restaurant à Lille</div>
+    <h1 class="hero-logo">Arcadia</h1>
+    <p class="hero-sous">Restaurant</p>
+    <div class="hero-line"></div>
+    <p class="hero-tagline">
+      Frais, fait maison, de saison.<br>
+      Une cuisine sincère qui change avec les arrivages.
+    </p>
+    <div class="hero-actions">
+      <a href="reservation.html" class="btn-warm">Réserver une table</a>
+      <a href="menu.html" class="btn-outline">Voir la carte</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Découvrir</div>
+</section>
+
+<!-- PHILOSOPHIE -->
+<section class="section section-light">
+  <div class="reveal">
+    <div class="eyebrow">Notre démarche</div>
+    <h2 class="section-title">Une cuisine <em>honnête</em></h2>
+    <div class="warm-line"></div>
+    <p class="section-intro">
+      Chez Arcadia, on cuisine ce que la saison nous offre. Pas de chichis —
+      des produits locaux, du marché, transformés avec soin. Une carte courte
+      qui change, des saveurs vraies.
+    </p>
+  </div>
+  <div class="philo-grid">
+    <div class="philo-card reveal">
+      <span class="philo-icon">🌿</span>
+      <div class="philo-titre">Local & de saison</div>
+      <p class="philo-desc">On s'approvisionne en priorité auprès des producteurs du coin. Quand la saison le permet, les légumes arrivent le matin même.</p>
+    </div>
+    <div class="philo-card reveal" style="transition-delay:0.1s;">
+      <span class="philo-icon">🍳</span>
+      <div class="philo-titre">Tout fait maison</div>
+      <p class="philo-desc">Les sauces, les desserts, les garnitures — tout est préparé ici, chaque jour. Rien de sorti d'un sachet, rien de réchauffé.</p>
+    </div>
+    <div class="philo-card reveal" style="transition-delay:0.2s;">
+      <span class="philo-icon">🌱</span>
+      <div class="philo-titre">Végétarien & vegan</div>
+      <p class="philo-desc">Une belle part de notre carte est végétarienne ou vegan. Parce que manger végétal, ça peut être délicieux et rassasiant.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLATS SIGNATURE -->
+<section class="section section-warm">
+  <div class="reveal" style="text-align:center;">
+    <div class="eyebrow">À la carte</div>
+    <h2 class="section-title">Quelques <em>incontournables</em></h2>
+    <div class="warm-line" style="margin:24px auto;"></div>
+    <p class="section-intro" style="margin:0 auto;text-align:center;">
+      La carte change régulièrement. Voici quelques exemples de ce qui vous attend.
+    </p>
+  </div>
+  <div class="plats-grid" style="margin-top:56px;">
+    <div class="plat-card reveal">
+      <div class="plat-card-body" style="padding:36px;">
+        <div class="plat-tag">Plat · Signature</div>
+        <div class="plat-nom">Magret de canard</div>
+        <p class="plat-desc">Endives braisées, purée de céleri rave, sauce soja et miel.</p>
+        <div class="plat-prix">19€</div>
+      </div>
+    </div>
+    <div class="plat-card reveal" style="transition-delay:0.1s;">
+      <div class="plat-card-body" style="padding:36px;">
+        <div class="plat-tag">Plat · Végétarien</div>
+        <div class="plat-nom">Fromage chaud du Jura</div>
+        <p class="plat-desc">200g, pommes grenailles au four, herbes fraîches.</p>
+        <div class="plat-prix">17€</div>
+      </div>
+    </div>
+    <div class="plat-card reveal" style="transition-delay:0.2s;">
+      <div class="plat-card-body" style="padding:36px;">
+        <div class="plat-tag">Dessert · Maison</div>
+        <div class="plat-nom">Pavlova aux agrumes</div>
+        <p class="plat-desc">Clémentine, pamplemousse, suprême d'orange, chantilly maison.</p>
+        <div class="plat-prix">5,50€</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:48px;" class="reveal">
+    <a href="menu.html" class="btn-warm">Voir la carte complète</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HORAIRES & INFOS -->
+<section class="section section-dark">
+  <div class="horaires-grid">
+    <div>
+      <div class="reveal">
+        <div class="eyebrow">Horaires</div>
+        <h2 class="section-title">Quand nous <em>trouver</em></h2>
+        <div class="warm-line"></div>
+      </div>
+      <div class="horaires-table reveal" data-bf="horaires">
+        <!-- Chargé dynamiquement -->
+        <div class="horaires-table-row"><span class="jour">Lun</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Mar</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Mer</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Jeu</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Ven</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Sam</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+        <div class="horaires-table-row"><span class="jour">Dim</span><span class="heure" style="color:rgba(240,235,226,0.3);">…</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="reveal">
+        <div class="eyebrow">Nous trouver</div>
+        <h2 class="section-title">Venir <em>chez nous</em></h2>
+        <div class="warm-line"></div>
+      </div>
+      <div class="horaires-infos reveal">
+        <div class="info-item">
+          <span class="info-icon">📍</span>
+          <div>
+            <div class="info-label">Adresse</div>
+            <div class="info-val" data-bf="adresse">Lille</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">📞</span>
+          <div>
+            <div class="info-label">Téléphone</div>
+            <div class="info-val"><a href="#" data-bf="telephone">—</a></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">✉️</span>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-val"><a href="#" data-bf="email">—</a></div>
+          </div>
+        </div>
+        <div style="margin-top:32px;">
+          <a href="reservation.html" class="btn-warm">Réserver une table</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Arcadia</div>
+      <p>Cuisine fraîche, locale et de saison.<br>Frais · Fait maison · De saison.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#" data-bf="telephone">Téléphone</a></li>
+        <li><a href="#" data-bf="email">Email</a></li>
+        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Arcadia · Tous droits réservés</p>
+    <a href="https://www.burstflow.fr" target="_blank" rel="noopener">Propulsé par Burstflow</a>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

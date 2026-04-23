@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — Arcadia</title>
+<meta name="description" content="La carte d'Arcadia. Cuisine fraîche, locale et de saison à Lille.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="on-dark">
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">
+    Arcadia
+    <small>Restaurant · Lille</small>
+  </a>
+  <ul class="nav-links" style="justify-content:flex-end;">
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="reservation.html" class="nav-reserver">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div>
+    <div class="page-hero-eyebrow">Frais · Fait maison · De saison</div>
+    <h1 class="page-hero-title">La Carte</h1>
+    <div class="page-hero-line"></div>
+    <p class="page-hero-sub">La carte change avec les arrivages</p>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="section section-light" style="padding-top:48px;padding-bottom:0;">
+  <div class="menu-wrap">
+
+    <!-- TABS -->
+    <div class="menu-tabs-container">
+      <div class="menu-tabs" id="bf-tabs">
+        <span style="color:var(--texte-doux);font-size:13px;">Chargement…</span>
+      </div>
+    </div>
+
+    <!-- SECTIONS DYNAMIQUES -->
+    <div id="bf-sections"></div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Arcadia</div>
+      <p>Cuisine fraîche, locale et de saison.<br>Frais · Fait maison · De saison.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#" data-bf="telephone">Téléphone</a></li>
+        <li><a href="#" data-bf="email">Email</a></li>
+        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Arcadia · Tous droits réservés</p>
+    <a href="https://www.burstflow.fr" target="_blank" rel="noopener">Propulsé par Burstflow</a>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

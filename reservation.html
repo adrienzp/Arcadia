@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réservation — Arcadia</title>
+<meta name="description" content="Réservez votre table chez Arcadia, restaurant à Lille.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="on-dark">
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="menu.html">Menu</a></li>
+  </ul>
+  <a href="index.html" class="nav-logo">
+    Arcadia
+    <small>Restaurant · Lille</small>
+  </a>
+  <ul class="nav-links" style="justify-content:flex-end;">
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="reservation.html" class="nav-reserver active" style="background:var(--terre);">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div>
+    <div class="page-hero-eyebrow">Votre soirée commence ici</div>
+    <h1 class="page-hero-title">Réserver</h1>
+    <div class="page-hero-line"></div>
+    <p class="page-hero-sub">Déjeuner · Dîner</p>
+  </div>
+</section>
+
+<!-- FORMULAIRE -->
+<section class="section section-light" style="padding-top:64px;">
+  <div class="resa-wrap">
+
+    <!-- Infos pratiques -->
+    <div class="resa-infos reveal">
+      <div class="resa-info-card">
+        <div class="resa-info-icon">🕐</div>
+        <div class="resa-info-titre">Déjeuner</div>
+        <div class="resa-info-val">Consultez nos horaires</div>
+      </div>
+      <div class="resa-info-card">
+        <div class="resa-info-icon">🌙</div>
+        <div class="resa-info-titre">Dîner</div>
+        <div class="resa-info-val">Consultez nos horaires</div>
+      </div>
+      <div class="resa-info-card">
+        <div class="resa-info-icon">📞</div>
+        <div class="resa-info-titre">Par téléphone</div>
+        <div class="resa-info-val"><a href="#" data-bf="telephone" style="color:inherit;">Nous appeler</a></div>
+      </div>
+    </div>
+
+    <!-- Formulaire -->
+    <form id="resa-form">
+      <div class="form-section-title reveal">Vos informations</div>
+
+      <div class="form-grid reveal">
+        <div class="form-field">
+          <label for="resa-nom">Nom complet *</label>
+          <input type="text" id="resa-nom" placeholder="Jean Dupont" required>
+        </div>
+        <div class="form-field">
+          <label for="resa-email">Email *</label>
+          <input type="email" id="resa-email" placeholder="jean@exemple.fr" required>
+        </div>
+        <div class="form-field">
+          <label for="resa-tel">Téléphone *</label>
+          <input type="tel" id="resa-tel" placeholder="06 00 00 00 00" required>
+        </div>
+        <div class="form-field">
+          <label for="resa-personnes">Nombre de couverts *</label>
+          <select id="resa-personnes" required>
+            <option value="">Choisir…</option>
+            <option value="1">1 personne</option>
+            <option value="2">2 personnes</option>
+            <option value="3">3 personnes</option>
+            <option value="4">4 personnes</option>
+            <option value="5">5 personnes</option>
+            <option value="6">6 personnes</option>
+            <option value="7">7 personnes</option>
+            <option value="8">8 personnes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-title reveal" style="margin-top:32px;">Date & heure</div>
+
+      <div class="form-grid reveal">
+        <div class="form-field">
+          <label for="resa-date">Date *</label>
+          <input type="date" id="resa-date" required>
+        </div>
+        <div class="form-field">
+          <label for="resa-heure">Heure *</label>
+          <select id="resa-heure" required>
+            <option value="">Choisir…</option>
+            <optgroup label="Déjeuner">
+              <option value="12:00">12h00</option>
+              <option value="12:30">12h30</option>
+              <option value="13:00">13h00</option>
+              <option value="13:30">13h30</option>
+            </optgroup>
+            <optgroup label="Dîner">
+              <option value="19:00">19h00</option>
+              <option value="19:30">19h30</option>
+              <option value="20:00">20h00</option>
+              <option value="20:30">20h30</option>
+              <option value="21:00">21h00</option>
+              <option value="21:30">21h30</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-field form-full">
+          <label for="resa-message">Message <span style="color:rgba(122,107,93,0.5);font-weight:300;">(allergies, occasion spéciale…)</span></label>
+          <textarea id="resa-message" rows="3" placeholder="Un message pour nous préparer au mieux…"></textarea>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <button type="submit" class="form-submit">Envoyer ma demande</button>
+        <p class="form-note">
+          Votre réservation sera confirmée par email.<br>
+          En cas d'empêchement, merci de nous prévenir au plus tôt.
+        </p>
+      </div>
+    </form>
+
+    <!-- Succès -->
+    <div id="resa-success" class="resa-success">
+      <div class="resa-success-icon">🌿</div>
+      <h2>Réservation reçue !</h2>
+      <p>
+        Merci pour votre demande. Vous allez recevoir un email de confirmation sous peu.<br><br>
+        À très bientôt chez <strong>Arcadia</strong>.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Arcadia</div>
+      <p>Cuisine fraîche, locale et de saison.<br>Frais · Fait maison · De saison.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#" data-bf="telephone">Téléphone</a></li>
+        <li><a href="#" data-bf="email">Email</a></li>
+        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Arcadia · Tous droits réservés</p>
+    <a href="https://www.burstflow.fr" target="_blank" rel="noopener">Propulsé par Burstflow</a>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
