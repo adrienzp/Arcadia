@@ -20,8 +20,8 @@ renderer.toneMappingExposure = 1.1;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
-scene.background = new THREE.Color(0x04060c);
-scene.fog = new THREE.Fog(0x04060c, 20, 52);
+scene.background = new THREE.Color(0x060c1a);
+scene.fog = new THREE.Fog(0x060c1a, 22, 55);
 
 var camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.1, 70);
 
@@ -262,9 +262,9 @@ pln(46, 4.4, M.wall, -W, 2.1, -6.8, 0,  Math.PI/2);
 pln(46, 4.4, M.wall,  W, 2.1, -6.8, 0, -Math.PI/2);
 pln(W*2, 4.4, M.wall, 0, 2.1, -31);
 
-// Murs extérieurs du bâtiment (épais, visibles de la rue)
-box(0.35, 11, 48, M.bldg, -W-0.18, 5.4, -7);
-box(0.35, 11, 48, M.bldg,  W+0.18, 5.4, -7);
+// Murs extérieurs du bâtiment (épais, visibles de la rue) — front face aligné avec la façade (z=16)
+box(0.35, 11, 47, M.bldg, -W-0.18, 5.4, -7.5);
+box(0.35, 11, 47, M.bldg,  W+0.18, 5.4, -7.5);
 
 // Lambris bas (wainscoting bois sombre — de 0 à 1.38m)
 var lambrisMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.65, color:0x4a3018 });
@@ -339,20 +339,38 @@ box(W*2+0.6, 0.12, 0.5, M.gold, 0, 10.97, 16.1);
 
 /* ── IMMEUBLES VOISINS — facades sombres, sans fenêtres criantes ── */
 var nbMat = new THREE.MeshStandardMaterial({ color:0x100e0c, roughness:0.96 });
+var nbMat2 = new THREE.MeshStandardMaterial({ color:0x0e0c0a, roughness:0.96 });
 // Très petites fenêtres quasi-invisibles (juste des creuses sombres)
 var winSubtle = new THREE.MeshStandardMaterial({ color:0x1a1e14, roughness:0.7 });
-box(10, 14, 0.8, nbMat, -W-5.5, 7.0, 16.1);
-[[-2,5],[0,5],[2,5],[-2,8.5],[0,8.5],[2,8.5]].forEach(function(p) {
-  box(0.9, 1.2, 0.05, winSubtle, -W-5.5+p[0], p[1], 16.56);
+
+// Immeuble voisin gauche — plus large et plus haut
+box(12, 18, 1.0, nbMat, -W-6.5, 9.0, 16.1);
+[[-3,5],[0,5],[3,5],[-3,9],[0,9],[3,9],[-3,13],[0,13],[3,13]].forEach(function(p) {
+  box(0.9, 1.2, 0.06, winSubtle, -W-6.5+p[0], p[1], 16.62);
 });
-box(10, 12, 0.8, nbMat,  W+5.5, 6.0, 16.1);
-[[-2,4.5],[0,4.5],[2,4.5],[-2,8],[0,8],[2,8]].forEach(function(p) {
-  box(0.9, 1.2, 0.05, winSubtle, W+5.5+p[0], p[1], 16.56);
+// Prolongement encore plus large (fond de rue gauche)
+box(14, 16, 0.8, nbMat2, -W-19, 8.0, 16.1);
+[[-4,5],[0,5],[4,5],[-4,9.5],[0,9.5],[4,9.5],[-4,13],[0,13],[4,13]].forEach(function(p) {
+  box(0.9, 1.1, 0.05, winSubtle, -W-19+p[0], p[1], 16.46);
 });
 
-// Trottoir + route
-box(W*2+22, 0.15, 0.3, M.ciment, 0, 0.075, 19.3);
-pln(28, 6, new THREE.MeshStandardMaterial({ color:0x0a0908, roughness:0.98 }), 0, -0.01, 25.5, -Math.PI/2);
+// Immeuble voisin droit — plus large et plus haut
+box(12, 16, 1.0, nbMat,  W+6.5, 8.0, 16.1);
+[[-3,4.5],[0,4.5],[3,4.5],[-3,9],[0,9],[3,9],[-3,12.5],[0,12.5],[3,12.5]].forEach(function(p) {
+  box(0.9, 1.2, 0.06, winSubtle, W+6.5+p[0], p[1], 16.62);
+});
+// Prolongement encore plus large (fond de rue droit)
+box(14, 14, 0.8, nbMat2,  W+19, 7.0, 16.1);
+[[-4,4.5],[0,4.5],[4,4.5],[-4,9],[0,9],[4,9],[-4,12],[0,12],[4,12]].forEach(function(p) {
+  box(0.9, 1.1, 0.05, winSubtle, W+19+p[0], p[1], 16.46);
+});
+
+// Trottoir + route — élargi pour couvrir toute la scène
+box(W*2+60, 0.15, 0.3, M.ciment, 0, 0.075, 19.3);
+pln(70, 6, new THREE.MeshStandardMaterial({ color:0x0a0908, roughness:0.98 }), 0, -0.01, 25.5, -Math.PI/2);
+
+// Mur de fond de rue — relie tous les immeubles visuellement
+box(70, 22, 0.5, nbMat2, 0, 11.0, 16.05);
 
 /* ── AUVENT ───────────────────────────────────────────── */
 box(5.5, 0.08, 1.5, M.awning, 0, 4.3, 15.5);
