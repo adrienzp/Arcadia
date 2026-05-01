@@ -115,11 +115,28 @@ var texBois = makeTex(256, 512, function (ctx, w, h) {
 }, 1, 3);
 
 var texFacade = makeTex(512, 512, function (ctx, w, h) {
-  ctx.fillStyle='#181008'; ctx.fillRect(0,0,w,h);
-  ctx.globalAlpha=0.1;
-  for (var i=0; i<5000; i++) {
-    ctx.beginPath(); ctx.arc(Math.random()*w,Math.random()*h,Math.random()*1.6,0,Math.PI*2);
-    ctx.fillStyle=Math.random()>.5?'#fff':'#000'; ctx.fill();
+  // Pierre haussmannienne — beige clair
+  ctx.fillStyle='#c8b890'; ctx.fillRect(0,0,w,h);
+  // Grain pierre léger
+  ctx.globalAlpha=0.06;
+  for (var i=0; i<6000; i++) {
+    ctx.fillStyle=Math.random()>.5?'#fff':'#000';
+    ctx.fillRect(Math.random()*w,Math.random()*h,1+Math.random()*2,1+Math.random()*2);
+  }
+  // Joints horizontaux (assises de pierre)
+  ctx.globalAlpha=0.14;
+  for (var j=0; j<h; j+=28) {
+    ctx.strokeStyle='#9a8060'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(w,j); ctx.stroke();
+  }
+  // Joints verticaux décalés (appareillage)
+  ctx.globalAlpha=0.08;
+  for (var r=0; r<h; r+=28) {
+    var off=(Math.floor(r/28)%2)*56;
+    for (var c=off; c<w; c+=112) {
+      ctx.strokeStyle='#9a8060'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(c,r); ctx.lineTo(c,r+28); ctx.stroke();
+    }
   }
   ctx.globalAlpha=1;
 }, 2, 3);
@@ -234,9 +251,14 @@ function pln(w,d,mat,x,y,z,rx,ry) {
 }
 
 /* ── LUMIÈRES ─────────────────────────────────────────── */
-scene.add(new THREE.AmbientLight(0xffddaa, 1.2));
-var dir = new THREE.DirectionalLight(0xffc87a, 0.7);
+scene.add(new THREE.AmbientLight(0xffddaa, 1.4));
+var dir = new THREE.DirectionalLight(0xffc87a, 0.9);
 dir.position.set(3, 8, 5); scene.add(dir);
+// Spots de façade (éclairent la pierre depuis le bas)
+var facL1 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL1.position.set(-4, 0.5, 17.5); facL1.target.position.set(-4, 4, 16); scene.add(facL1); scene.add(facL1.target);
+var facL2 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL2.position.set( 4, 0.5, 17.5); facL2.target.position.set( 4, 4, 16); scene.add(facL2); scene.add(facL2.target);
+// Lumière terrasse
+var terL = new THREE.PointLight(0xffcc66, 2.0, 16, 1.6); terL.position.set(0, 3.5, 19.5); scene.add(terL);
 // Zones intérieur
 var entL  = new THREE.PointLight(0xffaa55, 2.5, 14, 1.8); entL.position.set(0,3.2,10);   scene.add(entL);
 var midL  = new THREE.PointLight(0xffcc88, 2.2, 18, 1.5); midL.position.set(0,3.0,-2);   scene.add(midL);
@@ -290,9 +312,10 @@ box(3.2, 0.65, 0.28, M.facade, 0, 3.65, 16.2);
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
-// Mur vestibule intérieur — bloque la vue vers la salle depuis la rue
-// (juste derrière la façade, invisible de l'intérieur car dans le couloir d'entrée)
-box(W*2, 4.4, 0.2, new THREE.MeshStandardMaterial({ color:0x1a1208, roughness:0.9 }), 0, 2.1, 14.2);
+// Fond vestibule chaud — visible à travers les vitres depuis la rue
+box(W*2, 4.4, 0.1,
+  new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.55, roughness:0.9 }),
+  0, 2.1, 13.8);
 
 // Vitrines (plus opaques pour ne pas voir l'intérieur)
 [[-4.9],[4.9]].forEach(function(cx) {
@@ -372,10 +395,16 @@ pln(70, 6, new THREE.MeshStandardMaterial({ color:0x0a0908, roughness:0.98 }), 0
 // Mur de fond de rue — relie tous les immeubles visuellement
 box(70, 22, 0.5, nbMat2, 0, 11.0, 16.05);
 
-/* ── AUVENT ───────────────────────────────────────────── */
-box(5.5, 0.08, 1.5, M.awning, 0, 4.3, 15.5);
-var awC = new THREE.Mesh(new THREE.PlaneGeometry(5.5, 1.55), M.awning);
-awC.position.set(0, 3.85, 15.0); awC.rotation.x = 0.28; scene.add(awC);
+/* ── AUVENT pleine façade ─────────────────────────────── */
+// Barre de fixation
+box(W*2+0.3, 0.1, 0.18, M.gold, 0, 4.32, 16.16);
+// Toit horizontal de l'auvent
+box(W*2+0.2, 0.07, 2.0, M.awning, 0, 4.28, 15.22);
+// Pan incliné avant
+var awFront = new THREE.Mesh(new THREE.PlaneGeometry(W*2+0.2, 2.0), M.awning);
+awFront.position.set(0, 3.45, 14.3); awFront.rotation.x = 0.55; scene.add(awFront);
+// Valance tombante (bord)
+box(W*2+0.2, 0.45, 0.05, M.awning, 0, 2.65, 13.35);
 
 /* ── PORTE (2 battants animés) ────────────────────────── */
 box(0.1, 3.5, 0.24, M.gold, -1.55, 1.85, 16.1);
@@ -428,6 +457,50 @@ function plante(x, z) {
 }
 plante(-2.8, 16.8); plante(2.8, 16.8);
 plante(-6.5, -22);  plante(6.5, -4);
+// Plantes de terrasse
+plante(-6.2, 18.4); plante(6.2, 18.4);
+
+/* ── TERRASSE EXTÉRIEURE ──────────────────────────────── */
+var chaiseTerMat = new THREE.MeshStandardMaterial({ color:0x3a2e22, roughness:0.8 });
+var tableTerMat  = new THREE.MeshStandardMaterial({ color:0xf0ebe0, roughness:0.4 });
+
+// Garde-corps de terrasse (3 côtés)
+var railMat = new THREE.MeshStandardMaterial({ color:0x1a1a1a, roughness:0.3, metalness:0.7 });
+box(14.0, 0.06, 0.05, railMat, 0,    0.92, 21.2);
+box(14.0, 0.06, 0.05, railMat, 0,    0.52, 21.2);
+box( 0.05, 0.95, 0.05, railMat, -7.0, 0.48, 20.5);
+box( 0.05, 0.95, 0.05, railMat,  7.0, 0.48, 20.5);
+// Potelets
+[-7.0,-4.66,-2.33,0,2.33,4.66,7.0].forEach(function(px) {
+  cyl(0.025,0.025,0.96,6,railMat,px,0.48,21.2);
+});
+
+function tableTerrace(x, z) {
+  // Plateau
+  cyl(0.46, 0.46, 0.04, 14, tableTerMat, x, 0.74, z);
+  // Pied central
+  cyl(0.03, 0.03, 0.74, 7, chaiseTerMat, x, 0.37, z);
+  cyl(0.22, 0.22, 0.03, 10, chaiseTerMat, x, 0.02, z);
+}
+function chaiseTer(x, z, ry) {
+  var g = new THREE.Group();
+  var seat = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.04, 0.40), chaiseTerMat); seat.position.y=0.44; g.add(seat);
+  var back = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.40, 0.04), chaiseTerMat); back.position.set(0,0.66,-0.19); g.add(back);
+  [[-0.17,-0.16],[0.17,-0.16],[-0.17,0.16],[0.17,0.16]].forEach(function(p) {
+    var l=new THREE.Mesh(new THREE.BoxGeometry(0.035,0.44,0.035),chaiseTerMat); l.position.set(p[0],0.22,p[1]); g.add(l);
+  });
+  g.position.set(x,0,z); g.rotation.y=ry||0; scene.add(g);
+}
+
+tableTerrace(-4.5, 19.5); chaiseTer(-4.5, 18.8, 0); chaiseTer(-4.5, 20.2, Math.PI);
+tableTerrace( 0,   19.5); chaiseTer( 0,   18.8, 0); chaiseTer( 0,   20.2, Math.PI);
+tableTerrace( 4.5, 19.5); chaiseTer( 4.5, 18.8, 0); chaiseTer( 4.5, 20.2, Math.PI);
+chaiseTer(-5.3, 19.5, Math.PI/2); chaiseTer(-3.7, 19.5, -Math.PI/2);
+chaiseTer( 5.3, 19.5, Math.PI/2); chaiseTer( 3.7, 19.5, -Math.PI/2);
+chaiseTer(-0.8, 19.5, Math.PI/2); chaiseTer( 0.8, 19.5, -Math.PI/2);
+
+// Sol de terrasse (dalles claires)
+pln(14.2, 5.0, new THREE.MeshStandardMaterial({ color:0xc8b898, roughness:0.9 }), 0, 0.002, 19.5, -Math.PI/2);
 
 /* ── DÉCO MURALE ──────────────────────────────────────── */
 box(0.06, 1.8, 1.3, M.frame, -W+0.04, 2.2, 7);
