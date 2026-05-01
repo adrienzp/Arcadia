@@ -287,21 +287,7 @@
   </div>
 </footer>
 
-<script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-document.addEventListener('mousemove', function(e) {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-  ring.style.left   = e.clientX + 'px';
-  ring.style.top    = e.clientY + 'px';
-});
-document.querySelectorAll('a, button').forEach(function(el) {
-  el.addEventListener('mouseenter', function() { ring.classList.add('hover'); });
-  el.addEventListener('mouseleave', function() { ring.classList.remove('hover'); });
-});
-</script>
 <script src="main.js"></script>
+<script src="animations.js"></script>
 </body>
 </html>
