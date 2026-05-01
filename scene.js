@@ -69,14 +69,21 @@ var texFloor = makeTex(512, 512, function (ctx, w, h) {
 }, 3, 9);
 
 var texWall = makeTex(512, 512, function (ctx, w, h) {
-  ctx.fillStyle = '#c8b090'; ctx.fillRect(0, 0, w, h);
-  ctx.globalAlpha = 0.045;
-  for (var i = 0; i < 7000; i++) {
+  ctx.fillStyle = '#b8a07a'; ctx.fillRect(0, 0, w, h);
+  // Grain plâtre plus marqué
+  ctx.globalAlpha = 0.07;
+  for (var i = 0; i < 9000; i++) {
     ctx.fillStyle = Math.random()>.5?'#fff':'#000';
-    ctx.fillRect(Math.random()*w, Math.random()*h, 1+Math.random()*2, 1+Math.random()*2);
+    ctx.fillRect(Math.random()*w, Math.random()*h, 1+Math.random()*2.5, 1+Math.random()*2.5);
+  }
+  // Légères stries verticales (effet crépi)
+  ctx.globalAlpha = 0.04;
+  for (var j = 0; j < w; j += 4) {
+    ctx.strokeStyle = '#7a5830'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(j, 0); ctx.lineTo(j+(Math.random()-0.5)*3, h); ctx.stroke();
   }
   ctx.globalAlpha = 1;
-}, 2, 3);
+}, 7, 2);
 
 var texPave = makeTex(512, 512, function (ctx, w, h) {
   ctx.fillStyle = '#1a1208'; ctx.fillRect(0, 0, w, h);
@@ -259,6 +266,10 @@ pln(W*2, 4.4, M.wall, 0, 2.1, -31);
 box(0.35, 11, 48, M.bldg, -W-0.18, 5.4, -7);
 box(0.35, 11, 48, M.bldg,  W+0.18, 5.4, -7);
 
+// Lambris bas (wainscoting bois sombre — de 0 à 1.38m)
+var lambrisMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.65, color:0x4a3018 });
+pln(46, 1.38, lambrisMat, -W+0.06, 0.69, -6.8, 0, Math.PI/2);
+pln(46, 1.38, lambrisMat,  W-0.06, 0.69, -6.8, 0, -Math.PI/2);
 // Plinthes + cimaises
 box(0.08, 0.18, 46, M.beam, -W+0.04, 0.09, -6.8);
 box(0.08, 0.18, 46, M.beam,  W-0.04, 0.09, -6.8);
@@ -326,17 +337,17 @@ w2pos.forEach(function(wx,wi) {
 box(W*2+0.5, 0.5, 0.4, M.bldg, 0, 10.72, 16.1);
 box(W*2+0.6, 0.12, 0.5, M.gold, 0, 10.97, 16.1);
 
-/* ── IMMEUBLES VOISINS ────────────────────────────────── */
-var nbMat = new THREE.MeshStandardMaterial({ color:0x121008, roughness:0.94 });
-// Gauche
-box(10, 14, 1.0, nbMat, -W-5.5, 7.0, 16.1);
-[[-2,4.5],[0,4.5],[2,4.5],[-2,8.0],[0,8.0],[2,8.0],[-2,11.5],[0,11.5]].forEach(function(p,i) {
-  box(1.2,1.6,0.12, i%3===0?M.winLit:i%3===1?M.winDim:M.winOff, -W-5.5+p[0], p[1], 16.65);
+/* ── IMMEUBLES VOISINS — facades sombres, sans fenêtres criantes ── */
+var nbMat = new THREE.MeshStandardMaterial({ color:0x100e0c, roughness:0.96 });
+// Très petites fenêtres quasi-invisibles (juste des creuses sombres)
+var winSubtle = new THREE.MeshStandardMaterial({ color:0x1a1e14, roughness:0.7 });
+box(10, 14, 0.8, nbMat, -W-5.5, 7.0, 16.1);
+[[-2,5],[0,5],[2,5],[-2,8.5],[0,8.5],[2,8.5]].forEach(function(p) {
+  box(0.9, 1.2, 0.05, winSubtle, -W-5.5+p[0], p[1], 16.56);
 });
-// Droite
-box(10, 12, 1.0, nbMat,  W+5.5, 6.0, 16.1);
-[[-2,4],[0,4],[2,4],[-2,7.5],[0,7.5],[2,7.5],[-2,11]].forEach(function(p,i) {
-  box(1.2,1.6,0.12, i%2===0?M.winLit:M.winDim, W+5.5+p[0], p[1], 16.65);
+box(10, 12, 0.8, nbMat,  W+5.5, 6.0, 16.1);
+[[-2,4.5],[0,4.5],[2,4.5],[-2,8],[0,8],[2,8]].forEach(function(p) {
+  box(0.9, 1.2, 0.05, winSubtle, W+5.5+p[0], p[1], 16.56);
 });
 
 // Trottoir + route
@@ -545,13 +556,13 @@ scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0xffcc88,size:
 
 /* ── WAYPOINTS ────────────────────────────────────────── */
 var WP = [
-  { px: 1.5,  py:1.78, pz:27,   lx:-0.5, ly:1.5,  lz:16   },
-  { px: 0.4,  py:1.72, pz:19,   lx: 0,   ly:1.65, lz:13   },
-  { px:-0.8,  py:1.68, pz:12,   lx: 1.5, ly:1.5,  lz:2    },
-  { px:-1.5,  py:1.62, pz: 4,   lx: 2,   ly:1.4,  lz:-5   },
-  { px:-W+2.8,py:1.12, pz:-0.2, lx:-W+1.8,ly:0.86,lz:-0.8 },
-  { px: 1.8,  py:1.62, pz:-10,  lx:-1,   ly:1.4,  lz:-20  },
-  { px: 0.5,  py:1.48, pz:-21,  lx: 0,   ly:1.65, lz:-27  },
+  { px: 0.5,  py:1.72, pz:21,   lx: 0,   ly:1.62, lz:15.5 }, // Face à la façade, proche
+  { px: 0,    py:1.68, pz:15,   lx: 0,   ly:1.6,  lz:5    }, // Franchit la porte
+  { px:-0.8,  py:1.65, pz:9,    lx: 1.5, ly:1.5,  lz:0    }, // Entrée salle
+  { px:-1.5,  py:1.62, pz: 3,   lx: 2,   ly:1.4,  lz:-6   }, // Vue salle
+  { px:-W+2.8,py:1.12, pz:-0.2, lx:-W+1.8,ly:0.86,lz:-0.8 }, // Table + carte
+  { px: 1.8,  py:1.62, pz:-10,  lx:-1,   ly:1.4,  lz:-20  }, // Vers bar
+  { px: 0.5,  py:1.48, pz:-21,  lx: 0,   ly:1.65, lz:-27  }, // Au bar
 ];
 
 window._sceneProgress = 0;
