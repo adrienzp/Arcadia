@@ -36,6 +36,11 @@ async function loadRestaurantData() {
     });
 
     if (data.horaires) {
+      _horaires = data.horaires;
+      // Met à jour les heures dispo si le formulaire est déjà chargé
+      const dateInput = document.getElementById('resa-date');
+      if (dateInput && dateInput.value) updateHeures(dateInput.value);
+
       document.querySelectorAll('[data-bf="horaires"]').forEach(container => {
         container.innerHTML = '';
         [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => {
@@ -133,17 +138,104 @@ function showTab(id, btn) {
 // ─────────────────────────────────────────
 // FORMULAIRE RÉSERVATION
 // ─────────────────────────────────────────
+let _horaires = {};
+
+function isJourOuvert(date) {
+  if (!Object.keys(_horaires).length) return true;
+  const jour = new Date(date + 'T12:00:00').getDay();
+  const sched = _horaires[String(jour)];
+  return sched && sched.open !== false;
+}
+
+function getHeuresDisponibles(date) {
+  if (!Object.keys(_horaires).length) return null;
+  const jour = new Date(date + 'T12:00:00').getDay();
+  const sched = _horaires[String(jour)];
+  if (!sched || sched.open === false) return [];
+
+  const slots = [];
+  function addSlot(slot) {
+    if (!slot) return;
+    const [sh, sm] = slot.start.split(':').map(Number);
+    const [eh, em] = slot.end.split(':').map(Number);
+    let cur = sh * 60 + sm;
+    const end = eh * 60 + em;
+    while (cur <= end) {
+      const h = String(Math.floor(cur / 60)).padStart(2, '0');
+      const m = String(cur % 60).padStart(2, '0');
+      slots.push(h + ':' + m);
+      cur += 30;
+    }
+  }
+  addSlot(sched.lunch);
+  addSlot(sched.dinner);
+  return slots;
+}
+
+function updateHeures(date) {
+  const select = document.getElementById('resa-heure');
+  if (!select || !date) return;
+
+  const heures = getHeuresDisponibles(date);
+  if (!heures) return; // pas de config horaires, on laisse les options fixes
+
+  const prev = select.value;
+  select.innerHTML = '<option value="">Choisir…</option>';
+
+  if (heures.length === 0) {
+    select.innerHTML = '<option value="">Fermé ce jour</option>';
+    return;
+  }
+
+  // Groupe déjeuner / dîner
+  let lastGroup = '';
+  heures.forEach(function(h) {
+    const hh = parseInt(h.split(':')[0]);
+    const group = hh < 16 ? 'Déjeuner' : 'Dîner';
+    if (group !== lastGroup) {
+      const og = document.createElement('optgroup');
+      og.label = group;
+      select.appendChild(og);
+      lastGroup = group;
+    }
+    const opt = document.createElement('option');
+    opt.value = h;
+    opt.textContent = h.replace(':', 'h');
+    if (h === prev) opt.selected = true;
+    select.lastChild.appendChild(opt);
+  });
+}
+
 function initReservationForm() {
   const form = document.getElementById('resa-form');
   if (!form) return;
 
-  // Pré-rempli la date avec demain
+  // Pré-rempli la date avec le prochain jour ouvert
   const dateInput = document.getElementById('resa-date');
   if (dateInput) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     dateInput.min = tomorrow.toISOString().split('T')[0];
-    dateInput.value = tomorrow.toISOString().split('T')[0];
+
+    // Trouve le prochain jour ouvert
+    let candidate = new Date(tomorrow);
+    for (let i = 0; i < 14; i++) {
+      const str = candidate.toISOString().split('T')[0];
+      if (isJourOuvert(str)) { dateInput.value = str; break; }
+      candidate.setDate(candidate.getDate() + 1);
+    }
+
+    dateInput.addEventListener('change', function() {
+      const val = dateInput.value;
+      if (!isJourOuvert(val)) {
+        document.getElementById('resa-jour-ferme') && (document.getElementById('resa-jour-ferme').style.display = 'block');
+      } else {
+        document.getElementById('resa-jour-ferme') && (document.getElementById('resa-jour-ferme').style.display = 'none');
+      }
+      updateHeures(val);
+    });
+
+    updateHeures(dateInput.value);
   }
 
   form.addEventListener('submit', async function(e) {
