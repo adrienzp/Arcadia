@@ -226,12 +226,54 @@ function observeReveal() {
 }
 
 // ─────────────────────────────────────────
+// ÉVÉNEMENTS
+// ─────────────────────────────────────────
+async function loadEvenements() {
+  const container = document.getElementById('bf-evenements');
+  if (!container) return;
+
+  try {
+    const res = await fetch(BURSTFLOW_API);
+    if (!res.ok) return;
+    const data = await res.json();
+    const events = data.events || [];
+
+    if (events.length === 0) {
+      container.innerHTML = '<p style="color:var(--texte-doux);font-size:14px;text-align:center;padding:40px 0;">Aucun événement à venir pour le moment.</p>';
+      return;
+    }
+
+    container.innerHTML = events.map(function(ev) {
+      const debut = new Date(ev.starts_at);
+      const dateStr = debut.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const heureStr = debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      return '<div class="event-card reveal">' +
+        (ev.image_url ? '<div class="event-img"><img src="' + ev.image_url + '" alt="' + ev.title + '" loading="lazy"></div>' : '') +
+        '<div class="event-body">' +
+          '<div class="event-date">' + dateStr + ' à ' + heureStr + '</div>' +
+          '<h3 class="event-title">' + ev.title + '</h3>' +
+          (ev.description ? '<p class="event-desc">' + ev.description + '</p>' : '') +
+          (ev.capacity ? '<p class="event-capacity">Capacité : ' + ev.capacity + ' personnes</p>' : '') +
+          (ev.registration_url
+            ? '<a href="' + ev.registration_url + '" target="_blank" rel="noopener" class="event-btn">S\'inscrire</a>'
+            : '<a href="reservation.html" class="event-btn">Réserver une table</a>') +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    observeReveal();
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   initNav();
   loadRestaurantData();
   loadCarteData();
+  loadEvenements();
   initReservationForm();
   observeReveal();
 });
