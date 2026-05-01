@@ -396,6 +396,89 @@ footer { background: var(--noir2); padding: 80px 80px 40px; border-top: 1px soli
 @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* ── PAGE LOADER ── */
+.page-loader {
+  position: fixed; inset: 0; z-index: 3000;
+  background: var(--noir);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 1s cubic-bezier(0.76,0,0.24,1), visibility 1s;
+}
+.page-loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 8vw, 72px); font-weight: 300; font-style: italic;
+  color: var(--creme); letter-spacing: 2px;
+  opacity: 0; transform: translateY(16px);
+  animation: fadeUp 0.9s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s forwards;
+}
+.loader-bar { width: 120px; height: 1px; background: rgba(196,137,90,0.15); margin-top: 20px; overflow: hidden; }
+.loader-bar-fill { height: 100%; background: var(--bois); width: 0%; }
+
+/* ── HERO DEPTH (walking-in effect) ── */
+.hero-depth { position: absolute; inset: 0; overflow: hidden; }
+.hero-depth-img {
+  width: 100%; height: 115%; object-fit: cover; object-position: center;
+  transform-origin: center center; will-change: transform; display: block;
+}
+.hero-depth-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(14,11,8,0.55) 0%, rgba(14,11,8,0.25) 40%, rgba(14,11,8,0.65) 100%);
+}
+.hero-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+.hero-rule { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--bois), transparent); margin: 28px auto; opacity: 0; animation: fadeIn 1s ease 1.4s forwards; }
+.hero-scroll-indicator {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 2;
+  opacity: 0; animation: fadeIn 1.2s ease 2s forwards;
+}
+.scroll-line-anim { width: 1px; height: 44px; background: linear-gradient(to bottom, var(--bois), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+.scroll-label { font-size: 8px; letter-spacing: 5px; text-transform: uppercase; color: rgba(245,240,232,0.3); }
+@keyframes scrollPulse { 0%,100% { opacity:.3; transform:scaleY(.5) translateY(-8px); } 60% { opacity:1; transform:scaleY(1) translateY(0); } }
+
+/* ── SECTION JOURNEY ── */
+.s-hero { height: 100vh; min-height: 700px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+.s-salle { background: var(--noir); overflow: hidden; }
+.s-philo  { background: var(--noir2); }
+.s-carte  { background: var(--noir); overflow: hidden; }
+.s-stats  { background: var(--noir2); }
+.s-events { background: var(--noir); }
+.s-horaires { background: var(--noir2); }
+.s-resa-cta {
+  background: var(--noir);
+  min-height: 70vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+  position: relative; overflow: hidden; padding: 120px 40px;
+}
+.s-resa-cta .bg-word {
+  position: absolute; font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(120px, 20vw, 280px); font-weight: 300; font-style: italic;
+  color: rgba(196,137,90,0.04); line-height: 1; white-space: nowrap;
+  pointer-events: none; user-select: none; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.s-resa-cta .cta-eyebrow { font-size: 9px; letter-spacing: 8px; text-transform: uppercase; color: var(--bois); margin-bottom: 28px; }
+.s-resa-cta .cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 8vw, 100px); font-weight: 300; font-style: italic;
+  color: var(--creme); line-height: 1; margin-bottom: 48px;
+}
+.s-resa-cta .cta-title em { color: var(--bois); }
+
+/* ── CLIP REVEAL (GSAP) ── */
+.clip-reveal { clip-path: inset(100% 0 0 0); will-change: clip-path; }
+
+/* ── SPLIT CHARS (GSAP) ── */
+.split-char { display: inline-block; will-change: transform, opacity; }
+.split-word { display: inline-block; overflow: hidden; }
+.split-word-inner { display: inline-block; will-change: transform; }
+
+/* ── BARRE SCROLL ── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--bois); z-index: 9999; width: 0%;
+  transform-origin: left; pointer-events: none;
+}
+
 /* ── NOTIF ── */
 .notif {
   position: fixed; bottom: 28px; right: 28px;

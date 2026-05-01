@@ -9,10 +9,17 @@
 </head>
 <body>
 
+<!-- LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Arcadia</div>
+  <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
+</div>
+
 <!-- GRAIN + CURSOR -->
 <div class="grain"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
@@ -31,28 +38,40 @@
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
+<!-- ═══════════════════════════════════════
+     1. ENTRÉE — Le seuil
+════════════════════════════════════════ -->
+<section class="s-hero" id="s-hero">
+  <div class="hero-depth">
+    <img class="hero-depth-img" id="heroBgImg"
+      src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1800&q=85"
+      alt="Salle Arcadia">
+    <div class="hero-depth-overlay"></div>
+  </div>
   <div class="hero-lines"></div>
-  <div class="hero-eyebrow">Restaurant à Lille</div>
-  <h1 class="hero-title">Arcadia</h1>
-  <p class="hero-sub">Cuisine locale · Frais · Fait maison</p>
-  <div class="hero-line-anim"></div>
-  <div class="hero-cta">
-    <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
-    <a href="menu.html" class="btn btn-outline"><span>Voir la carte</span></a>
+
+  <div class="hero-inner" id="heroInner">
+    <div class="hero-eyebrow">Restaurant à Lille</div>
+    <h1 class="hero-title" id="heroTitle">Arcadia</h1>
+    <p class="hero-sub">Cuisine locale · Frais · Fait maison</p>
+    <div class="hero-rule"></div>
+    <div class="hero-cta">
+      <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
+      <a href="menu.html" class="btn btn-outline"><span>Voir la carte</span></a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line-anim"></div>
+    <span class="scroll-label">Entrer</span>
   </div>
 </section>
 
-<!-- MARQUEE -->
+<!-- ═══════════════════════════════════════
+     MARQUEE
+════════════════════════════════════════ -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Local</span><span class="marquee-item marquee-sep">✦</span>
-    <span class="marquee-item">Sincère</span><span class="marquee-item marquee-sep">✦</span>
     <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
     <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
     <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
@@ -71,49 +90,56 @@
   </div>
 </div>
 
-<!-- ABOUT SPLIT -->
-<section class="section section-dark reveal">
+<!-- ═══════════════════════════════════════
+     2. LA SALLE — Tu entres, tu découvres
+════════════════════════════════════════ -->
+<section class="s-salle section section-dark" id="s-salle">
   <div class="about-grid">
-    <div class="about-img reveal from-left">
-      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Cuisine Arcadia" class="about-img-main">
+    <div class="about-img" id="salleImgWrap">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=85"
+           alt="Cuisine Arcadia" class="about-img-main" id="salleImg">
       <div class="about-img-badge">
         <strong>5</strong>
         <span>ans à Lille</span>
       </div>
     </div>
-    <div class="reveal from-right">
-      <div class="eyebrow">Notre démarche</div>
-      <h2 class="display-title">Une cuisine<br><em>honnête</em></h2>
-      <div class="warm-line"></div>
-      <p class="section-intro">
-        Chez Arcadia, on cuisine ce que la saison nous offre. Des produits locaux, du marché, transformés avec soin. Une carte courte qui change, des saveurs vraies.
+    <div id="salleText">
+      <div class="eyebrow" id="salleEyebrow">La salle</div>
+      <h2 class="display-title" id="salleTitle">Une cuisine<br><em>honnête</em></h2>
+      <div class="warm-line" id="salleLine"></div>
+      <p class="section-intro" id="salleIntro">
+        Chez Arcadia, on cuisine ce que la saison nous offre.<br>
+        Des produits locaux, du marché, transformés avec soin.<br>
+        Une carte courte qui change — des saveurs vraies.
       </p>
-      <div style="margin-top:40px;">
+      <div style="margin-top:40px;" id="salleBtn">
         <a href="menu.html" class="btn btn-outline"><span>Découvrir la carte</span> <span class="btn-arrow">→</span></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PHILO -->
-<section class="section section-dark2">
-  <div style="text-align:center;" class="reveal">
-    <div class="eyebrow">Nos engagements</div>
-    <h2 class="section-title">Ce qui <em>nous guide</em></h2>
-    <div class="warm-line" style="margin:24px auto;"></div>
+<!-- ═══════════════════════════════════════
+     3. LA PHILOSOPHIE — Ce qui nous guide
+════════════════════════════════════════ -->
+<section class="s-philo section" id="s-philo">
+  <div style="text-align:center; margin-bottom:16px;">
+    <div class="eyebrow" id="philoEyebrow">Nos engagements</div>
+    <h2 class="section-title" id="philoTitle">Ce qui <em>nous guide</em></h2>
+    <div class="warm-line" style="margin:24px auto;" id="philoLine"></div>
   </div>
-  <div class="philo-grid">
-    <div class="philo-card reveal">
+  <div class="philo-grid" id="philoGrid">
+    <div class="philo-card">
       <div class="philo-num">01</div>
       <div class="philo-titre">Local & de saison</div>
       <p class="philo-desc">On s'approvisionne en priorité auprès des producteurs du coin. Quand la saison le permet, les légumes arrivent le matin même.</p>
     </div>
-    <div class="philo-card reveal" style="transition-delay:.15s;">
+    <div class="philo-card">
       <div class="philo-num">02</div>
       <div class="philo-titre">Tout fait maison</div>
       <p class="philo-desc">Les sauces, les desserts, les garnitures — tout est préparé ici, chaque jour. Rien de sorti d'un sachet, rien de réchauffé.</p>
     </div>
-    <div class="philo-card reveal" style="transition-delay:.3s;">
+    <div class="philo-card">
       <div class="philo-num">03</div>
       <div class="philo-titre">Végétarien & vegan</div>
       <p class="philo-desc">Une belle part de notre carte est végétarienne ou vegan. Parce que manger végétal, ça peut être délicieux et rassasiant.</p>
@@ -121,42 +147,44 @@
   </div>
 </section>
 
-<!-- FOOD GRID -->
-<section class="section section-dark" style="padding-bottom:0;">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;" class="reveal">
+<!-- ═══════════════════════════════════════
+     4. LA CARTE — Les plats, enfin
+════════════════════════════════════════ -->
+<section class="s-carte section" id="s-carte">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0;">
     <div>
-      <div class="eyebrow">À la carte</div>
-      <h2 class="section-title">Quelques <em>incontournables</em></h2>
+      <div class="eyebrow" id="carteEyebrow">À la carte</div>
+      <h2 class="section-title" id="carteTitle">Quelques <em>incontournables</em></h2>
     </div>
-    <a href="menu.html" class="btn btn-outline" style="margin-bottom:4px;"><span>Carte complète</span> <span class="btn-arrow">→</span></a>
+    <a href="menu.html" class="btn btn-outline" id="carteBtnMore" style="margin-bottom:4px;"><span>Carte complète</span> <span class="btn-arrow">→</span></a>
   </div>
-  <div class="food-grid">
-    <div class="food-card reveal">
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80" alt="Plat signature" class="food-card-img">
+  <div class="food-grid" id="foodGrid" style="margin-top:56px;">
+    <div class="food-card" id="food0">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=85" alt="Plat signature" class="food-card-img">
       <div class="food-card-overlay">
         <div class="food-card-tag">Plat · Signature</div>
         <div class="food-card-nom">Magret de canard</div>
         <div class="food-card-prix">19€</div>
       </div>
     </div>
-    <div class="food-card reveal" style="transition-delay:.1s;">
-      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Végétarien" class="food-card-img">
+    <div class="food-card" id="food1">
+      <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=85" alt="Végétarien" class="food-card-img">
       <div class="food-card-overlay">
         <div class="food-card-tag">Végétarien</div>
         <div class="food-card-nom">Fromage chaud du Jura</div>
         <div class="food-card-prix">17€</div>
       </div>
     </div>
-    <div class="food-card reveal" style="transition-delay:.2s;">
-      <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80" alt="Dessert" class="food-card-img">
+    <div class="food-card" id="food2">
+      <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=85" alt="Dessert" class="food-card-img">
       <div class="food-card-overlay">
         <div class="food-card-tag">Dessert · Maison</div>
         <div class="food-card-nom">Pavlova aux agrumes</div>
         <div class="food-card-prix">5,50€</div>
       </div>
     </div>
-    <div class="food-card reveal" style="transition-delay:.25s;">
-      <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=80" alt="Entrée" class="food-card-img">
+    <div class="food-card" id="food3">
+      <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&q=85" alt="Entrée" class="food-card-img">
       <div class="food-card-overlay">
         <div class="food-card-tag">Entrée</div>
         <div class="food-card-nom">Velouté du moment</div>
@@ -166,50 +194,54 @@
   </div>
 </section>
 
-<!-- STATS -->
-<section class="section section-dark2">
-  <div class="stats-grid reveal">
+<!-- ═══════════════════════════════════════
+     5. EN CHIFFRES
+════════════════════════════════════════ -->
+<section class="s-stats section" id="s-stats">
+  <div class="stats-grid" id="statsGrid">
     <div class="stat-item">
-      <div class="stat-num">100%</div>
+      <div class="stat-num" data-target="100" data-suffix="%">100%</div>
       <div class="stat-label">Fait maison</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">5</div>
+      <div class="stat-num" data-target="5" data-suffix="">5</div>
       <div class="stat-label">Ans à Lille</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">0</div>
+      <div class="stat-num" data-target="0" data-suffix="">0</div>
       <div class="stat-label">Plats congelés</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">∞</div>
+      <div class="stat-num" data-target="∞" data-suffix="">∞</div>
       <div class="stat-label">Passion</div>
     </div>
   </div>
 </section>
 
-<!-- ÉVÉNEMENTS -->
-<section class="section section-dark" id="evenements">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;" class="reveal">
+<!-- ═══════════════════════════════════════
+     6. AGENDA
+════════════════════════════════════════ -->
+<section class="s-events section" id="s-events">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0;">
     <div>
-      <div class="eyebrow">Agenda</div>
-      <h2 class="section-title">Événements <em>à venir</em></h2>
+      <div class="eyebrow" id="eventsEyebrow">Agenda</div>
+      <h2 class="section-title" id="eventsTitle">Événements <em>à venir</em></h2>
     </div>
     <a href="evenements.html" class="btn btn-outline" style="margin-bottom:4px;"><span>Tous les événements</span> <span class="btn-arrow">→</span></a>
   </div>
-  <div id="bf-evenements" class="events-grid"></div>
+  <div id="bf-evenements" class="events-grid" style="margin-top:56px;"></div>
 </section>
 
-<!-- HORAIRES -->
-<section class="section section-dark2">
+<!-- ═══════════════════════════════════════
+     7. HORAIRES & CONTACT
+════════════════════════════════════════ -->
+<section class="s-horaires section" id="s-horaires">
   <div class="horaires-wrap">
-    <div>
-      <div class="reveal">
-        <div class="eyebrow">Horaires</div>
-        <h2 class="section-title">Quand nous <em>trouver</em></h2>
-        <div class="warm-line"></div>
-      </div>
-      <div class="horaires-list reveal" data-bf="horaires">
+    <div id="horairesLeft">
+      <div class="eyebrow">Horaires</div>
+      <h2 class="section-title" id="horairesTitle">Quand nous <em>trouver</em></h2>
+      <div class="warm-line" style="margin-bottom:0;" id="horairesLine"></div>
+      <div class="horaires-list" data-bf="horaires" id="horairesList" style="margin-top:40px;">
         <div class="h-row"><span class="h-jour">Lun</span><span class="h-heure" style="opacity:.2;">…</span></div>
         <div class="h-row"><span class="h-jour">Mar</span><span class="h-heure" style="opacity:.2;">…</span></div>
         <div class="h-row"><span class="h-jour">Mer</span><span class="h-heure" style="opacity:.2;">…</span></div>
@@ -219,13 +251,11 @@
         <div class="h-row"><span class="h-jour">Dim</span><span class="h-heure" style="opacity:.2;">…</span></div>
       </div>
     </div>
-    <div>
-      <div class="reveal">
-        <div class="eyebrow">Nous trouver</div>
-        <h2 class="section-title">Venir <em>chez nous</em></h2>
-        <div class="warm-line"></div>
-      </div>
-      <div class="infos-list reveal">
+    <div id="horairesRight">
+      <div class="eyebrow">Nous trouver</div>
+      <h2 class="section-title" id="contactTitle">Venir <em>chez nous</em></h2>
+      <div class="warm-line" id="contactLine"></div>
+      <div class="infos-list" style="margin-top:40px;">
         <div class="info-row">
           <span class="info-row-icon">📍</span>
           <div>
@@ -247,12 +277,21 @@
             <div class="info-row-val"><a href="#" data-bf="email">—</a></div>
           </div>
         </div>
-        <div style="margin-top:16px;">
-          <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
-        </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     8. CTA FINAL — Une table ce soir ?
+════════════════════════════════════════ -->
+<section class="s-resa-cta" id="s-resa-cta">
+  <div class="bg-word" id="bgWord">Arcadia</div>
+  <p class="cta-eyebrow" id="ctaEyebrow">Réservez votre table</p>
+  <h2 class="cta-title" id="ctaTitle">Une table<br><em>ce soir ?</em></h2>
+  <a href="reservation.html" class="btn btn-warm" id="ctaBtn">
+    <span>Réserver maintenant</span> <span class="btn-arrow">→</span>
+  </a>
 </section>
 
 <!-- FOOTER -->
@@ -287,6 +326,9 @@
   </div>
 </footer>
 
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
 <script src="animations.js"></script>
 </body>
