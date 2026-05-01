@@ -479,6 +479,46 @@ footer { background: var(--noir2); padding: 80px 80px 40px; border-top: 1px soli
   transform-origin: left; pointer-events: none;
 }
 
+/* ── CANVAS 3D ── */
+#scene-canvas { position: fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; display:block; }
+#scroll-driver { height: 700vh; position: relative; z-index: 1; pointer-events: none; }
+#regular-content { position: relative; z-index: 5; background: var(--noir); }
+
+/* ── OVERLAYS FIXES ── */
+.ov {
+  position: fixed; inset: 0; z-index: 10;
+  opacity: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.ov a, .ov button, .ov input, .ov select, .ov textarea { pointer-events: all; }
+.ov-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ov-bottom-left  { align-items: flex-end; justify-content: flex-start; padding: 0 0 72px 80px; }
+.ov-bottom-right { align-items: flex-end; justify-content: flex-end;   padding: 0 80px 72px 0; }
+.ov-right        { align-items: center;   justify-content: flex-end;   padding: 0 80px 0 0; }
+
+/* ── GLASS PANEL ── */
+.glass-panel {
+  background: rgba(8, 5, 3, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(196,137,90,0.2);
+  padding: 40px 44px;
+  max-width: 400px;
+}
+
+/* ── OV PLATS ── */
+.ov-plats { margin-top: 20px; display: flex; flex-direction: column; gap: 0; }
+.ov-plat { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(196,137,90,0.1); gap: 24px; }
+.ov-plat:first-child { border-top: 1px solid rgba(196,137,90,0.1); }
+.ov-plat-nom  { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--creme); font-weight: 400; }
+.ov-plat-prix { font-size: 14px; color: var(--bois); white-space: nowrap; }
+
+/* ── OV STATS ── */
+.ov-stats-grid { display: flex; gap: 0; }
+.ov-stat { padding: 40px 48px; text-align: center; border: 1px solid rgba(196,137,90,0.12); background: rgba(8,5,3,0.6); backdrop-filter: blur(12px); }
+.ov-stat-num { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px,6vw,80px); font-style: italic; color: var(--bois); line-height: 1; }
+.ov-stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,232,0.35); margin-top: 8px; }
+
 /* ── NOTIF ── */
 .notif {
   position: fixed; bottom: 28px; right: 28px;
