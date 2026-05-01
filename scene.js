@@ -413,7 +413,8 @@
     var lp = new THREE.PointLight(0xffcc66, 2.0, 12, 2);
     lp.position.set(x, 4.1, z); scene.add(lp);
     var hm = new THREE.MeshBasicMaterial({ color:0xffbb44, transparent:true, opacity:0.12, blending:THREE.AdditiveBlending, depthWrite:false });
-    scene.add(new THREE.Mesh(new THREE.SphereGeometry(0.7, 8, 8), hm)).position.set(x, 4.1, z);
+    var halo = new THREE.Mesh(new THREE.SphereGeometry(0.7, 8, 8), hm);
+    halo.position.set(x, 4.1, z); scene.add(halo);
   }
   lantern(-6, 21);
   lantern( 6, 21);
@@ -635,7 +636,8 @@
   var barPL2 = new THREE.PointLight(0xffcc88, 2.0, 10, 2);
   barPL2.position.set( 2, 2.3, -23); scene.add(barPL2);
   // Lumière chaude sous étagères
-  scene.add(Object.assign(new THREE.PointLight(0xff9944, 1.5, 8, 2), { position: new THREE.Vector3(0, 2.2, -25.5) }));
+  var underShelfL = new THREE.PointLight(0xff9944, 1.5, 8, 2);
+  underShelfL.position.set(0, 2.2, -25.5); scene.add(underShelfL);
 
   /* ── PARTICULES AMBIANCE ─────────────────────────────────── */
   var PC = 280;
