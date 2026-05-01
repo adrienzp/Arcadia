@@ -312,10 +312,10 @@ box(3.2, 0.65, 0.28, M.facade, 0, 3.65, 16.2);
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
-// Fond vestibule chaud — visible à travers les vitres depuis la rue
-box(W*2, 4.4, 0.1,
-  new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.55, roughness:0.9 }),
-  0, 2.1, 13.8);
+// Fond vestibule chaud — deux panneaux, laissent la porte libre (x=-1.55 à +1.55)
+var vestMat = new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.55, roughness:0.9 });
+box(W-1.65, 4.4, 0.1, vestMat, -(W/2+1.65/2), 2.1, 13.8);  // panneau gauche
+box(W-1.65, 4.4, 0.1, vestMat,  (W/2+1.65/2), 2.1, 13.8);  // panneau droit
 
 // Vitrines (plus opaques pour ne pas voir l'intérieur)
 [[-4.9],[4.9]].forEach(function(cx) {
@@ -457,50 +457,76 @@ function plante(x, z) {
 }
 plante(-2.8, 16.8); plante(2.8, 16.8);
 plante(-6.5, -22);  plante(6.5, -4);
-// Plantes de terrasse
-plante(-6.2, 18.4); plante(6.2, 18.4);
+/* ── TERRASSE BISTROT — côté gauche du restaurant ────────── */
+// Terrasse à gauche de l'entrée (x : -8.5 à -14.5, z : 17 à 23)
+var TX = -11.5; // centre horizontal de la terrasse
+var TZ =  20.0; // centre en profondeur
 
-/* ── TERRASSE EXTÉRIEURE ──────────────────────────────── */
-var chaiseTerMat = new THREE.MeshStandardMaterial({ color:0x3a2e22, roughness:0.8 });
-var tableTerMat  = new THREE.MeshStandardMaterial({ color:0xf0ebe0, roughness:0.4 });
+// Sol terrasse (pavés clairs)
+pln(6.0, 6.2, new THREE.MeshStandardMaterial({ color:0xc0b090, roughness:0.92 }), TX, 0.002, TZ, -Math.PI/2);
 
-// Garde-corps de terrasse (3 côtés)
-var railMat = new THREE.MeshStandardMaterial({ color:0x1a1a1a, roughness:0.3, metalness:0.7 });
-box(14.0, 0.06, 0.05, railMat, 0,    0.92, 21.2);
-box(14.0, 0.06, 0.05, railMat, 0,    0.52, 21.2);
-box( 0.05, 0.95, 0.05, railMat, -7.0, 0.48, 20.5);
-box( 0.05, 0.95, 0.05, railMat,  7.0, 0.48, 20.5);
-// Potelets
-[-7.0,-4.66,-2.33,0,2.33,4.66,7.0].forEach(function(px) {
-  cyl(0.025,0.025,0.96,6,railMat,px,0.48,21.2);
+// Garde-corps métal noir — style bistrot parisien
+var railMat = new THREE.MeshStandardMaterial({ color:0x181818, roughness:0.28, metalness:0.75 });
+// Barre haute + basse côté rue (z = 23.1)
+box(6.0, 0.05, 0.04, railMat, TX, 0.95, 23.1);
+box(6.0, 0.05, 0.04, railMat, TX, 0.52, 23.1);
+// Côté gauche (x = -14.5)
+box(0.04, 0.97, 6.2, railMat, -14.5, 0.49, TZ);
+box(0.04, 0.05, 6.2, railMat, -14.5, 0.95, TZ);
+// Potelets côté rue
+[-14.5,-12.5,-10.5,-8.5].forEach(function(px) {
+  cyl(0.022,0.022,0.98,6,railMat,px,0.49,23.1);
+});
+// Potelets côté gauche
+[17.0,19.0,21.0,23.1].forEach(function(pz) {
+  cyl(0.022,0.022,0.98,6,railMat,-14.5,0.49,pz);
 });
 
-function tableTerrace(x, z) {
-  // Plateau
-  cyl(0.46, 0.46, 0.04, 14, tableTerMat, x, 0.74, z);
-  // Pied central
-  cyl(0.03, 0.03, 0.74, 7, chaiseTerMat, x, 0.37, z);
-  cyl(0.22, 0.22, 0.03, 10, chaiseTerMat, x, 0.02, z);
+// Tables bistrot : plateau zinc rond, pied fonte
+var zincMat  = new THREE.MeshStandardMaterial({ color:0x9aaa9a, roughness:0.35, metalness:0.55 });
+var fonteMat = new THREE.MeshStandardMaterial({ color:0x141414, roughness:0.45, metalness:0.6  });
+
+function tableBistrot(x, z) {
+  // Plateau zinc
+  cyl(0.36, 0.36, 0.03, 14, zincMat, x, 0.74, z);
+  // Pied central fonte (évasé en bas)
+  cyl(0.018, 0.018, 0.72, 7, fonteMat, x, 0.36, z);
+  // Base en croix
+  box(0.64, 0.025, 0.06, fonteMat, x, 0.025, z);
+  box(0.06, 0.025, 0.64, fonteMat, x, 0.025, z);
+  // Collerette décorative mi-pied
+  cyl(0.055, 0.03, 0.06, 9, fonteMat, x, 0.52, z);
 }
-function chaiseTer(x, z, ry) {
+
+// Chaise bistrot Thonet (bois courbé, assise cannée)
+var thonetMat = new THREE.MeshStandardMaterial({ color:0x2e1a08, roughness:0.75 });
+var canneMat  = new THREE.MeshStandardMaterial({ color:0xc8a060, roughness:0.82 });
+
+function chaiseBistrot(x, z, ry) {
   var g = new THREE.Group();
-  var seat = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.04, 0.40), chaiseTerMat); seat.position.y=0.44; g.add(seat);
-  var back = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.40, 0.04), chaiseTerMat); back.position.set(0,0.66,-0.19); g.add(back);
-  [[-0.17,-0.16],[0.17,-0.16],[-0.17,0.16],[0.17,0.16]].forEach(function(p) {
-    var l=new THREE.Mesh(new THREE.BoxGeometry(0.035,0.44,0.035),chaiseTerMat); l.position.set(p[0],0.22,p[1]); g.add(l);
+  // Assise cannée
+  var seat = new THREE.Mesh(new THREE.CylinderGeometry(0.20,0.20,0.03,12), canneMat); seat.position.y=0.46; g.add(seat);
+  // Dossier arrondi (2 montants + traverses)
+  var back = new THREE.Mesh(new THREE.TorusGeometry(0.18,0.018,6,14,Math.PI), thonetMat);
+  back.position.set(0,0.82,-0.18); back.rotation.x=Math.PI/2; g.add(back);
+  var bL = new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.016,0.42,6), thonetMat);
+  bL.position.set(-0.14,0.62,-0.19); bL.rotation.x=-0.18; g.add(bL);
+  var bR = bL.clone(); bR.position.set(0.14,0.62,-0.19); g.add(bR);
+  // 4 pieds galbés
+  [[-0.17,-0.15,Math.PI*0.06],[-0.17,0.15,-Math.PI*0.06],[0.17,-0.15,Math.PI*0.06],[0.17,0.15,-Math.PI*0.06]].forEach(function(p) {
+    var l = new THREE.Mesh(new THREE.CylinderGeometry(0.014,0.014,0.47,6), thonetMat);
+    l.position.set(p[0],0.23,p[1]); l.rotation.x=p[2]; g.add(l);
   });
   g.position.set(x,0,z); g.rotation.y=ry||0; scene.add(g);
 }
 
-tableTerrace(-4.5, 19.5); chaiseTer(-4.5, 18.8, 0); chaiseTer(-4.5, 20.2, Math.PI);
-tableTerrace( 0,   19.5); chaiseTer( 0,   18.8, 0); chaiseTer( 0,   20.2, Math.PI);
-tableTerrace( 4.5, 19.5); chaiseTer( 4.5, 18.8, 0); chaiseTer( 4.5, 20.2, Math.PI);
-chaiseTer(-5.3, 19.5, Math.PI/2); chaiseTer(-3.7, 19.5, -Math.PI/2);
-chaiseTer( 5.3, 19.5, Math.PI/2); chaiseTer( 3.7, 19.5, -Math.PI/2);
-chaiseTer(-0.8, 19.5, Math.PI/2); chaiseTer( 0.8, 19.5, -Math.PI/2);
+// 3 tables + 2 chaises chacune
+tableBistrot(-13.0, 18.2); chaiseBistrot(-13.0, 17.35, 0);    chaiseBistrot(-13.0, 19.05, Math.PI);
+tableBistrot(-11.5, 20.5); chaiseBistrot(-11.5, 19.65, 0);    chaiseBistrot(-11.5, 21.35, Math.PI);
+tableBistrot(-10.0, 18.2); chaiseBistrot(-10.0, 17.35, 0);    chaiseBistrot(-10.0, 19.05, Math.PI);
 
-// Sol de terrasse (dalles claires)
-pln(14.2, 5.0, new THREE.MeshStandardMaterial({ color:0xc8b898, roughness:0.9 }), 0, 0.002, 19.5, -Math.PI/2);
+// Plantes d'ambiance terrasse
+plante(-14.2, 17.2); plante(-8.6, 17.2);
 
 /* ── DÉCO MURALE ──────────────────────────────────────── */
 box(0.06, 1.8, 1.3, M.frame, -W+0.04, 2.2, 7);
