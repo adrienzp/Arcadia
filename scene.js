@@ -161,7 +161,7 @@
   var M = {
     floor:  new THREE.MeshStandardMaterial({ map:texFloor, roughness:0.6,  metalness:0.03 }),
     ceil:   new THREE.MeshStandardMaterial({ color:0xd0bfa0, roughness:0.92 }),
-    wall:   new THREE.MeshStandardMaterial({ map:texWall,  roughness:0.88 }),
+    wall:   new THREE.MeshStandardMaterial({ map:texWall,  roughness:0.88, side:THREE.DoubleSide }),
     pave:   new THREE.MeshStandardMaterial({ map:texPave,  roughness:0.94 }),
     facade: new THREE.MeshStandardMaterial({ map:texFacade,roughness:0.86 }),
     door:   new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.52, metalness:0.05 }),
@@ -295,29 +295,29 @@
   box(3.22, 0.1, 0.24, M.gold, 0, 3.45, 16.1);
   box(3.18, 0.07, 0.26, M.gold, 0, 0.035, 16.1);
 
-  // Pivot au montant du cadre, panneau s'étend vers le centre
+  // Pivot au montant du cadre, panneau couvre toute la demi-ouverture
   var doorL = new THREE.Group();
   doorL.position.set(-1.55, 1.85, 16.1);
-  var dpL = new THREE.Mesh(new THREE.BoxGeometry(1.36, 3.26, 0.08), M.door);
-  dpL.position.x = +0.68; doorL.add(dpL);  // extend rightward (toward center)
+  var dpL = new THREE.Mesh(new THREE.BoxGeometry(1.52, 3.26, 0.08), M.door);
+  dpL.position.x = +0.76; doorL.add(dpL);
   [0.72,-0.72].forEach(function(py) {
-    var p = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.95, 0.04), M.door);
-    p.position.set(+0.68, py, 0.065); doorL.add(p);
+    var p = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.95, 0.04), M.door);
+    p.position.set(+0.76, py, 0.065); doorL.add(p);
   });
   var hG = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), M.gold);
-  hG.rotation.z = Math.PI/2; hG.position.set(+1.22, 0, 0.11); doorL.add(hG); // handle near free edge
+  hG.rotation.z = Math.PI/2; hG.position.set(+1.36, 0, 0.11); doorL.add(hG);
   scene.add(doorL);
 
   var doorR = new THREE.Group();
   doorR.position.set(1.55, 1.85, 16.1);
-  var dpR = new THREE.Mesh(new THREE.BoxGeometry(1.36, 3.26, 0.08), M.door);
-  dpR.position.x = -0.68; doorR.add(dpR);  // extend leftward (toward center)
+  var dpR = new THREE.Mesh(new THREE.BoxGeometry(1.52, 3.26, 0.08), M.door);
+  dpR.position.x = -0.76; doorR.add(dpR);
   [0.72,-0.72].forEach(function(py) {
-    var p = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.95, 0.04), M.door);
-    p.position.set(-0.68, py, 0.065); doorR.add(p);
+    var p = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.95, 0.04), M.door);
+    p.position.set(-0.76, py, 0.065); doorR.add(p);
   });
   var hD = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), M.gold);
-  hD.rotation.z = Math.PI/2; hD.position.set(-1.22, 0, 0.11); doorR.add(hD);
+  hD.rotation.z = Math.PI/2; hD.position.set(-1.36, 0, 0.11); doorR.add(hD);
   scene.add(doorR);
 
   /* ── AUVENT ───────────────────────────────────────────── */
@@ -473,6 +473,66 @@
     chaise(t[0], t[1]-0.68, 0);
     chaise(t[0], t[1]+0.68, Math.PI);
   });
+
+  /* ── PUPITRE D'ACCUEIL ────────────────────────────────── */
+  // Piètement
+  box(0.6, 1.12, 0.5, M.bois, 1.5, 0.56, 12.5);
+  // Plan incliné (dessus lecteur)
+  var pupMesh = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.05, 0.52), M.beam);
+  pupMesh.position.set(1.5, 1.18, 12.5); pupMesh.rotation.x = -0.22; scene.add(pupMesh);
+  // Pied doré
+  box(0.62, 0.04, 0.52, M.gold, 1.5, 1.12, 12.5);
+  // Petite lampe sur le pupitre
+  cyl(0.015, 0.015, 0.28, 6, M.gold, 1.5, 1.38, 12.3);
+  var lampHead = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.12, 8, 1, true), M.shade);
+  lampHead.position.set(1.5, 1.56, 12.3); scene.add(lampHead);
+  var lampBulb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), M.bulb);
+  lampBulb.position.set(1.5, 1.5, 12.3); scene.add(lampBulb);
+
+  /* ── PERSONNAGES LOW-POLY ─────────────────────────────── */
+  // Matériaux silhouettes (tons neutres chauds — bistrot)
+  var skinM  = new THREE.MeshStandardMaterial({ color:0xc08060, roughness:0.85 });
+  var coat1  = new THREE.MeshStandardMaterial({ color:0x3a2818, roughness:0.8 }); // sombre
+  var coat2  = new THREE.MeshStandardMaterial({ color:0x2e3a28, roughness:0.8 }); // vert foncé
+  var coat3  = new THREE.MeshStandardMaterial({ color:0x3a2030, roughness:0.8 }); // bordeaux
+  var coat4  = new THREE.MeshStandardMaterial({ color:0x4a3820, roughness:0.8 }); // brun
+
+  function personne(x, y, z, ry, coat, assis) {
+    var g = new THREE.Group();
+    // Tête
+    var head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 7), skinM);
+    head.position.y = assis ? 0.82 : 1.64; g.add(head);
+    // Torse
+    var torso = new THREE.Mesh(new THREE.BoxGeometry(0.28, assis?0.38:0.5, 0.2), coat);
+    torso.position.y = assis ? 0.58 : 1.28; g.add(torso);
+    if (assis) {
+      // Jambes pliées
+      var lap = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.1, 0.38), coat);
+      lap.position.set(0, 0.38, 0.12); g.add(lap);
+    } else {
+      // Jambes droites
+      var legL = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.5, 0.12), coat);
+      legL.position.set(-0.08, 0.75, 0); g.add(legL);
+      var legR = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.5, 0.12), coat);
+      legR.position.set( 0.08, 0.75, 0); g.add(legR);
+    }
+    g.position.set(x, y, z); g.rotation.y = ry || 0;
+    scene.add(g);
+  }
+
+  // Personnes assises (à quelques tables)
+  personne(-W+1.8+0.75, 0, 5,    -Math.PI/2, coat1, true);   // banquette t1
+  personne(-W+1.8,      0, 5+0.6, Math.PI,   coat2, true);
+  personne(-W+1.8+0.75, 0, -1,   -Math.PI/2, coat3, true);   // banquette t2 (table carte)
+  personne(-W+1.8,      0, -1-0.6,0,         coat4, true);
+  personne(W-2.2,       0,  6,    Math.PI/4,  coat2, true);  // table ronde 1
+  personne(W-2.2+0.65,  0,  6,   -Math.PI/3,  coat1, true);
+  personne(0.8,         0,  3+0.6, Math.PI,   coat3, true);  // centrale 1
+  personne(-0.5,        0, -5-0.6, 0,         coat4, true);  // centrale 2
+  personne(-0.5+0.82,   0, -5,   -Math.PI/2,  coat1, true);
+
+  // Hôtesse debout derrière le pupitre
+  personne(1.5, 0, 12.5, Math.PI, coat1, false);
 
   /* ── BAR ──────────────────────────────────────────────── */
   box(10, 1.18, 0.74, M.bois,  0, 0.59, -24.5);
