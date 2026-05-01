@@ -16,12 +16,12 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.shadowMap.enabled = false; // désactivé pour les perf
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.3;
+  renderer.toneMappingExposure = 1.05;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   var scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0e0804);
-  scene.fog = new THREE.Fog(0x1c1006, 20, 52);
+  scene.background = new THREE.Color(0x05080e);  // ciel nuit
+  scene.fog = new THREE.Fog(0x05080e, 22, 55);
 
   var camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.1, 70);
 
@@ -212,8 +212,8 @@
   }
 
   /* ── LUMIÈRES — max 8 PointLights ────────────────────── */
-  // 1. Ambiance chaude (forte, compense l'absence de nombreuses sources)
-  scene.add(new THREE.AmbientLight(0xffddaa, 2.8));
+  // 1. Ambiance — réduite pour éviter l'aspect lavé/plat
+  scene.add(new THREE.AmbientLight(0xffddaa, 1.4));
   // 2. Directionnel doux d'en haut
   var dir = new THREE.DirectionalLight(0xffc87a, 0.8);
   dir.position.set(3, 8, 5); scene.add(dir);
@@ -266,13 +266,12 @@
   // Poutre longitudinale centrale
   box(0.2, 0.2, 52, M.beam, 0, 3.92, -4);
 
-  /* ── FAÇADE ───────────────────────────────────────────── */
-  // Panneaux
+  /* ── FAÇADE RDC ───────────────────────────────────────── */
   box(1.8, 4.4, 0.28, M.facade, -5.8, 2.1, 16.2);
   box(1.8, 4.4, 0.28, M.facade,  5.8, 2.1, 16.2);
   box(1.5, 4.4, 0.28, M.facade, -3.8, 2.1, 16.2);
   box(1.5, 4.4, 0.28, M.facade,  3.8, 2.1, 16.2);
-  box(3.2, 0.65, 0.28, M.facade, 0, 3.65, 16.2);
+  box(3.2, 0.65, 0.28, M.facade,  0,  3.65, 16.2);
   box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
   box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
@@ -288,6 +287,70 @@
   // Enseigne
   box(4.5, 0.68, 0.08, M.sign,  0, 3.1, 16.22);
   box(4.62, 0.8, 0.06, M.gold, 0, 3.1, 16.26);
+
+  /* ── BÂTIMENT COMPLET (étages au-dessus du RDC) ──────── */
+  var bldMat = new THREE.MeshStandardMaterial({ color:0x1a1510, roughness:0.92 });
+  var winMat = new THREE.MeshStandardMaterial({ color:0x0a0e18, roughness:0.5 });
+  // Fenêtre allumée (émissive — lumière chaude de nuit)
+  var winLit = new THREE.MeshStandardMaterial({
+    color:0xffcc88, emissive:new THREE.Color(0xffcc66), emissiveIntensity:0.9, roughness:0.5
+  });
+  // Fenêtre légèrement allumée
+  var winDim = new THREE.MeshStandardMaterial({
+    color:0x6a7850, emissive:new THREE.Color(0x4a5830), emissiveIntensity:0.5, roughness:0.5
+  });
+
+  // Étage 1 (y 4.4 → 7.6)
+  box(W*2+0.5, 3.2, 0.28, bldMat, 0, 5.94, 16.2);
+  box(W*2+0.5, 0.1, 0.3, M.gold, 0, 7.52, 16.2);  // corniche inter-étage
+  // Fenêtres étage 1 (6 fenêtres)
+  var win1pos = [-6.2,-3.7,-1.2,1.2,3.7,6.2];
+  var win1lit = [true,false,true,true,false,true];
+  win1pos.forEach(function(wx, wi) {
+    box(1.4, 2.0, 0.1, win1lit[wi]?winLit:winDim, wx, 5.94, 16.22);
+    box(1.52, 0.06, 0.14, bldMat, wx, 6.98, 16.22);
+    box(1.52, 0.06, 0.14, bldMat, wx, 4.98, 16.22);
+    box(0.06, 2.1, 0.14, bldMat, wx-0.76, 5.94, 16.22);
+    box(0.06, 2.1, 0.14, bldMat, wx+0.76, 5.94, 16.22);
+  });
+
+  // Étage 2 (y 7.6 → 10.5)
+  box(W*2+0.5, 2.9, 0.28, bldMat, 0, 8.95, 16.2);
+  box(W*2+0.5, 0.1, 0.3, M.gold, 0, 10.38, 16.2);
+  var win2pos = [-5.5,-2.5,0,2.5,5.5];
+  var win2lit = [false,true,false,true,false];
+  win2pos.forEach(function(wx, wi) {
+    box(1.3, 1.8, 0.1, win2lit[wi]?winLit:winDim, wx, 8.9, 16.22);
+    box(0.06, 1.9, 0.14, bldMat, wx-0.66, 8.9, 16.22);
+    box(0.06, 1.9, 0.14, bldMat, wx+0.66, 8.9, 16.22);
+    box(1.42, 0.06, 0.14, bldMat, wx, 9.82, 16.22);
+    box(1.42, 0.06, 0.14, bldMat, wx, 7.98, 16.22);
+  });
+
+  // Toit / attique
+  box(W*2+0.5, 0.5, 0.4, bldMat, 0, 10.7, 16.0);
+  box(W*2+0.6, 0.12, 0.5, M.gold, 0, 10.94, 16.0);
+
+  /* ── BÂTIMENTS VOISINS (rue urbaine) ──────────────────── */
+  var nbMat1 = new THREE.MeshStandardMaterial({ color:0x141210, roughness:0.94 });
+  var nbMat2 = new THREE.MeshStandardMaterial({ color:0x10120e, roughness:0.92 });
+
+  // Immeuble gauche
+  box(10, 14, 1.0, nbMat1, -W-5.5, 7, 16.0);
+  // Fenêtres immeuble gauche
+  [[0,5],[0,8.5],[0,12],[-2,5],[-2,8.5],[-2,12],[2,5],[2,8.5]].forEach(function(p, i) {
+    box(1.2, 1.6, 0.12, i%3===0?winLit:i%3===1?winDim:winMat, -W-5.5+p[0], p[1], 16.52);
+  });
+  // Immeuble droit
+  box(10, 12, 1.0, nbMat2, W+5.5, 6, 16.0);
+  [[0,4],[0,7.5],[0,11],[2,4],[2,7.5],[-2,4],[-2,7.5]].forEach(function(p, i) {
+    box(1.2, 1.6, 0.12, i%2===0?winLit:winDim, W+5.5+p[0], p[1], 16.52);
+  });
+
+  // Trottoir plus large, bord de rue
+  box(W*2+22, 0.15, 0.3, M.ciment, 0, 0.075, 19.3);  // bordure trottoir
+  // "Route" au delà
+  pln(28, 6, new THREE.MeshStandardMaterial({ color:0x0e0c0a, roughness:0.98 }), 0, -0.01, 25.5, -Math.PI/2);
 
   /* ── PORTE (2 battants animés) ────────────────────────── */
   box(0.1, 3.5, 0.24, M.gold, -1.55, 1.85, 16.1);
@@ -475,64 +538,10 @@
   });
 
   /* ── PUPITRE D'ACCUEIL ────────────────────────────────── */
-  // Piètement
-  box(0.6, 1.12, 0.5, M.bois, 1.5, 0.56, 12.5);
-  // Plan incliné (dessus lecteur)
-  var pupMesh = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.05, 0.52), M.beam);
-  pupMesh.position.set(1.5, 1.18, 12.5); pupMesh.rotation.x = -0.22; scene.add(pupMesh);
-  // Pied doré
-  box(0.62, 0.04, 0.52, M.gold, 1.5, 1.12, 12.5);
-  // Petite lampe sur le pupitre
-  cyl(0.015, 0.015, 0.28, 6, M.gold, 1.5, 1.38, 12.3);
-  var lampHead = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.12, 8, 1, true), M.shade);
-  lampHead.position.set(1.5, 1.56, 12.3); scene.add(lampHead);
-  var lampBulb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), M.bulb);
-  lampBulb.position.set(1.5, 1.5, 12.3); scene.add(lampBulb);
-
-  /* ── PERSONNAGES LOW-POLY ─────────────────────────────── */
-  // Matériaux silhouettes (tons neutres chauds — bistrot)
-  var skinM  = new THREE.MeshStandardMaterial({ color:0xc08060, roughness:0.85 });
-  var coat1  = new THREE.MeshStandardMaterial({ color:0x3a2818, roughness:0.8 }); // sombre
-  var coat2  = new THREE.MeshStandardMaterial({ color:0x2e3a28, roughness:0.8 }); // vert foncé
-  var coat3  = new THREE.MeshStandardMaterial({ color:0x3a2030, roughness:0.8 }); // bordeaux
-  var coat4  = new THREE.MeshStandardMaterial({ color:0x4a3820, roughness:0.8 }); // brun
-
-  function personne(x, y, z, ry, coat, assis) {
-    var g = new THREE.Group();
-    // Tête
-    var head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 7), skinM);
-    head.position.y = assis ? 0.82 : 1.64; g.add(head);
-    // Torse
-    var torso = new THREE.Mesh(new THREE.BoxGeometry(0.28, assis?0.38:0.5, 0.2), coat);
-    torso.position.y = assis ? 0.58 : 1.28; g.add(torso);
-    if (assis) {
-      // Jambes pliées
-      var lap = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.1, 0.38), coat);
-      lap.position.set(0, 0.38, 0.12); g.add(lap);
-    } else {
-      // Jambes droites
-      var legL = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.5, 0.12), coat);
-      legL.position.set(-0.08, 0.75, 0); g.add(legL);
-      var legR = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.5, 0.12), coat);
-      legR.position.set( 0.08, 0.75, 0); g.add(legR);
-    }
-    g.position.set(x, y, z); g.rotation.y = ry || 0;
-    scene.add(g);
-  }
-
-  // Personnes assises (à quelques tables)
-  personne(-W+1.8+0.75, 0, 5,    -Math.PI/2, coat1, true);   // banquette t1
-  personne(-W+1.8,      0, 5+0.6, Math.PI,   coat2, true);
-  personne(-W+1.8+0.75, 0, -1,   -Math.PI/2, coat3, true);   // banquette t2 (table carte)
-  personne(-W+1.8,      0, -1-0.6,0,         coat4, true);
-  personne(W-2.2,       0,  6,    Math.PI/4,  coat2, true);  // table ronde 1
-  personne(W-2.2+0.65,  0,  6,   -Math.PI/3,  coat1, true);
-  personne(0.8,         0,  3+0.6, Math.PI,   coat3, true);  // centrale 1
-  personne(-0.5,        0, -5-0.6, 0,         coat4, true);  // centrale 2
-  personne(-0.5+0.82,   0, -5,   -Math.PI/2,  coat1, true);
-
-  // Hôtesse debout derrière le pupitre
-  personne(1.5, 0, 12.5, Math.PI, coat1, false);
+  box(0.58, 1.1, 0.48, M.bois,  1.5, 0.55, 12.5);
+  box(0.6,  0.04, 0.5, M.gold,  1.5, 1.12, 12.5);
+  var pupTop = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.05, 0.5), M.beam);
+  pupTop.position.set(1.5, 1.16, 12.5); pupTop.rotation.x = -0.2; scene.add(pupTop);
 
   /* ── BAR ──────────────────────────────────────────────── */
   box(10, 1.18, 0.74, M.bois,  0, 0.59, -24.5);
