@@ -35,6 +35,7 @@ async function loadRestaurantData() {
       if (el.tagName === 'A') el.href = 'mailto:' + (data.email || '');
     });
 
+    if (data.slot_interval) _slotInterval = data.slot_interval;
     if (data.horaires) {
       _horaires = data.horaires;
       // Met à jour les heures dispo si le formulaire est déjà chargé
@@ -139,6 +140,7 @@ function showTab(id, btn) {
 // FORMULAIRE RÉSERVATION
 // ─────────────────────────────────────────
 let _horaires = {};
+let _slotInterval = 30;
 
 function isJourOuvert(date) {
   if (!Object.keys(_horaires).length) return true;
@@ -164,7 +166,7 @@ function getHeuresDisponibles(date) {
       const h = String(Math.floor(cur / 60)).padStart(2, '0');
       const m = String(cur % 60).padStart(2, '0');
       slots.push(h + ':' + m);
-      cur += 30;
+      cur += _slotInterval;
     }
   }
   addSlot(sched.lunch);
