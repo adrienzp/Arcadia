@@ -295,28 +295,29 @@
   box(3.22, 0.1, 0.24, M.gold, 0, 3.45, 16.1);
   box(3.18, 0.07, 0.26, M.gold, 0, 0.035, 16.1);
 
+  // Pivot au montant du cadre, panneau s'étend vers le centre
   var doorL = new THREE.Group();
   doorL.position.set(-1.55, 1.85, 16.1);
   var dpL = new THREE.Mesh(new THREE.BoxGeometry(1.36, 3.26, 0.08), M.door);
-  dpL.position.x = -0.68; doorL.add(dpL);
+  dpL.position.x = +0.68; doorL.add(dpL);  // extend rightward (toward center)
   [0.72,-0.72].forEach(function(py) {
     var p = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.95, 0.04), M.door);
-    p.position.set(-0.68, py, 0.065); doorL.add(p);
+    p.position.set(+0.68, py, 0.065); doorL.add(p);
   });
   var hG = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), M.gold);
-  hG.rotation.z = Math.PI/2; hG.position.set(-0.22, 0, 0.11); doorL.add(hG);
+  hG.rotation.z = Math.PI/2; hG.position.set(+1.22, 0, 0.11); doorL.add(hG); // handle near free edge
   scene.add(doorL);
 
   var doorR = new THREE.Group();
   doorR.position.set(1.55, 1.85, 16.1);
   var dpR = new THREE.Mesh(new THREE.BoxGeometry(1.36, 3.26, 0.08), M.door);
-  dpR.position.x = 0.68; doorR.add(dpR);
+  dpR.position.x = -0.68; doorR.add(dpR);  // extend leftward (toward center)
   [0.72,-0.72].forEach(function(py) {
     var p = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.95, 0.04), M.door);
-    p.position.set(0.68, py, 0.065); doorR.add(p);
+    p.position.set(-0.68, py, 0.065); doorR.add(p);
   });
   var hD = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.22, 8), M.gold);
-  hD.rotation.z = Math.PI/2; hD.position.set(0.22, 0, 0.11); doorR.add(hD);
+  hD.rotation.z = Math.PI/2; hD.position.set(-1.22, 0, 0.11); doorR.add(hD);
   scene.add(doorR);
 
   /* ── AUVENT ───────────────────────────────────────────── */
@@ -564,8 +565,8 @@
     var dp = Math.max(0, Math.min(1, (prog-0.14)/0.12));
     var ds = dp*dp*(3-2*dp);
     doorAng += (ds*1.45 - doorAng)*0.06;
-    doorL.rotation.y = -(0.04 + doorAng);
-    doorR.rotation.y  =  (0.04 + doorAng);
+    doorL.rotation.y = +(0.04 + doorAng);  // pivote vers l'intérieur (-Z)
+    doorR.rotation.y = -(0.04 + doorAng);  // idem côté droit
 
     // Flammes (animation légère)
     flameMeshes.forEach(function(c) {
