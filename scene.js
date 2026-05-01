@@ -30,9 +30,9 @@ var composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 var bloom = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  1.2,   // strength — intensité du halo
-  0.55,  // radius
-  0.72   // threshold — seuil (seuls les émissifs brillent)
+  0.65,  // strength — réduit pour éviter les halos gigantesques
+  0.4,   // radius
+  0.88   // threshold élevé — seuls les émissifs très brillants bloment
 );
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
@@ -182,7 +182,7 @@ var M = {
   leg:    new THREE.MeshStandardMaterial({ color:0x2e1a0a, roughness:0.85 }),
   plate:  new THREE.MeshStandardMaterial({ color:0xf8f3ec, roughness:0.2 }),
   cloth:  new THREE.MeshStandardMaterial({ color:0xf0ebe0, roughness:0.85 }),
-  glass:  new THREE.MeshStandardMaterial({ color:0xaaccdd, roughness:0.04, transparent:true, opacity:0.38 }),
+  glass:  new THREE.MeshStandardMaterial({ color:0xaaccdd, roughness:0.04, transparent:true, opacity:0.65 }),
   gold:   new THREE.MeshStandardMaterial({ color:0xc4895a, roughness:0.18, metalness:0.78 }),
   sign:   new THREE.MeshStandardMaterial({ map:texSign,  roughness:0.45 }),
   menu:   new THREE.MeshStandardMaterial({ map:texMenu,  roughness:0.55 }),
@@ -199,11 +199,11 @@ var M = {
   ciment: new THREE.MeshStandardMaterial({ color:0x1a1408, roughness:0.96 }),
   copper: new THREE.MeshStandardMaterial({ color:0xb87040, roughness:0.25, metalness:0.85 }),
   // Émissifs — bloom les fera vraiment briller
-  bulb:   new THREE.MeshStandardMaterial({ color:0xffffff, emissive:new THREE.Color(0xffeeaa), emissiveIntensity:2.5 }),
+  bulb:   new THREE.MeshStandardMaterial({ color:0xffffff, emissive:new THREE.Color(0xffeeaa), emissiveIntensity:1.6 }),
   flame:  new THREE.MeshBasicMaterial({ color:0xffcc44 }),          // très lumineux = bloom fort
   glowR:  new THREE.MeshBasicMaterial({ color:0xff6600, transparent:true, opacity:0.35, blending:THREE.AdditiveBlending, depthWrite:false }),
-  winLit: new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffcc66), emissiveIntensity:2.0 }),
-  winDim: new THREE.MeshStandardMaterial({ color:0x4a5830, emissive:new THREE.Color(0x3a4820), emissiveIntensity:0.8 }),
+  winLit: new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffcc66), emissiveIntensity:1.1 }),
+  winDim: new THREE.MeshStandardMaterial({ color:0x4a5830, emissive:new THREE.Color(0x3a4820), emissiveIntensity:0.4 }),
   winOff: new THREE.MeshStandardMaterial({ color:0x0a0c10, roughness:0.5 }),
   bldg:   new THREE.MeshStandardMaterial({ color:0x161210, roughness:0.92 }),
 };
@@ -279,7 +279,11 @@ box(3.2, 0.65, 0.28, M.facade, 0, 3.65, 16.2);
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
-// Vitrines
+// Mur vestibule intérieur — bloque la vue vers la salle depuis la rue
+// (juste derrière la façade, invisible de l'intérieur car dans le couloir d'entrée)
+box(W*2, 4.4, 0.2, new THREE.MeshStandardMaterial({ color:0x1a1208, roughness:0.9 }), 0, 2.1, 14.2);
+
+// Vitrines (plus opaques pour ne pas voir l'intérieur)
 [[-4.9],[4.9]].forEach(function(cx) {
   box(2.2, 2.6, 0.1, M.glass, cx[0], 1.7, 16.12);
   box(2.32, 0.07, 0.16, M.gold, cx[0], 3.02, 16.16);
@@ -378,13 +382,10 @@ scene.add(doorR);
 function lantern(x, z) {
   cyl(0.035, 0.035, 4.2, 8, M.ciment, x, 2.1, z);
   box(0.24, 0.38, 0.24, M.ciment, x, 4.3, z);
-  // Ampoule émissive (bloom)
-  var lb = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 8), M.bulb);
+  // Ampoule petite — bloom doux
+  var lb = new THREE.Mesh(new THREE.SphereGeometry(0.07, 7, 7), M.bulb);
   lb.position.set(x, 4.08, z); scene.add(lb);
-  var hm = new THREE.MeshBasicMaterial({ color:0xffcc55, transparent:true, opacity:0.25, blending:THREE.AdditiveBlending, depthWrite:false });
-  var hl = new THREE.Mesh(new THREE.SphereGeometry(0.6, 8, 8), hm);
-  hl.position.set(x, 4.08, z); scene.add(hl);
-  var lp = new THREE.PointLight(0xffcc66, 1.8, 10, 2);
+  var lp = new THREE.PointLight(0xffcc66, 1.2, 10, 2);
   lp.position.set(x, 4.08, z); scene.add(lp);
 }
 lantern(-6, 21);
