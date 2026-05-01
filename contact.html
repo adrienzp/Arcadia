@@ -4,9 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Arcadia</title>
+<meta name="description" content="Contactez Arcadia, restaurant à Lille.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- GRAIN + CURSOR -->
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
@@ -21,7 +27,7 @@
   </a>
   <ul class="nav-links" style="justify-content:flex-end;">
     <li><a href="contact.html" class="active">Contact</a></li>
-    <li><a href="reservation.html" class="nav-reserver">Réserver</a></li>
+    <li><a href="reservation.html" class="nav-btn">Réserver</a></li>
   </ul>
 </nav>
 
@@ -36,53 +42,47 @@
 </section>
 
 <!-- CONTACT -->
-<section class="section section-light">
-  <div style="max-width:800px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;" class="reveal">
-
-      <div>
-        <div class="eyebrow">Nous trouver</div>
-        <h2 class="section-title" style="font-size:36px;">Où <em>sommes-nous</em> ?</h2>
-        <div class="warm-line"></div>
-
-        <div class="info-item" style="margin-top:36px;display:flex;gap:16px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:2px;">📍</span>
+<section class="section section-dark">
+  <div class="horaires-wrap">
+    <div class="reveal">
+      <div class="eyebrow">Nous trouver</div>
+      <h2 class="section-title">Où <em>sommes-nous</em> ?</h2>
+      <div class="warm-line"></div>
+      <div class="infos-list" style="margin-top:36px;">
+        <div class="info-row">
+          <span class="info-row-icon">📍</span>
           <div>
-            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--bois);margin-bottom:4px;font-weight:500;">Adresse</div>
-            <div style="font-size:15px;color:var(--texte);line-height:1.7;" data-bf="adresse">Lille</div>
+            <div class="info-row-label">Adresse</div>
+            <div class="info-row-val" data-bf="adresse">Lille</div>
           </div>
         </div>
-
-        <div class="info-item" style="margin-top:24px;display:flex;gap:16px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:2px;">📞</span>
+        <div class="info-row">
+          <span class="info-row-icon">📞</span>
           <div>
-            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--bois);margin-bottom:4px;font-weight:500;">Téléphone</div>
-            <div style="font-size:15px;color:var(--texte);"><a href="#" data-bf="telephone" style="color:var(--texte);text-decoration:none;">—</a></div>
+            <div class="info-row-label">Téléphone</div>
+            <div class="info-row-val"><a href="#" data-bf="telephone">—</a></div>
           </div>
         </div>
-
-        <div class="info-item" style="margin-top:24px;display:flex;gap:16px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;margin-top:2px;">✉️</span>
+        <div class="info-row">
+          <span class="info-row-icon">✉️</span>
           <div>
-            <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--bois);margin-bottom:4px;font-weight:500;">Email</div>
-            <div style="font-size:15px;color:var(--texte);"><a href="#" data-bf="email" style="color:var(--texte);text-decoration:none;">—</a></div>
+            <div class="info-row-label">Email</div>
+            <div class="info-row-val"><a href="#" data-bf="email">—</a></div>
           </div>
-        </div>
-
-        <div style="margin-top:40px;">
-          <a href="reservation.html" class="btn-warm">Réserver une table</a>
         </div>
       </div>
-
-      <div>
-        <div class="eyebrow">Horaires</div>
-        <h2 class="section-title" style="font-size:36px;">Quand nous <em>trouver</em> ?</h2>
-        <div class="warm-line"></div>
-        <div style="margin-top:36px;" data-bf="horaires" class="horaires-light">
-          <!-- Chargé dynamiquement -->
-        </div>
+      <div style="margin-top:40px;">
+        <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
       </div>
+    </div>
 
+    <div class="reveal" style="transition-delay:.15s;">
+      <div class="eyebrow">Horaires</div>
+      <h2 class="section-title">Quand nous <em>trouver</em> ?</h2>
+      <div class="warm-line"></div>
+      <div class="horaires-list" style="margin-top:36px;" data-bf="horaires">
+        <!-- Chargé dynamiquement -->
+      </div>
     </div>
   </div>
 </section>
@@ -99,6 +99,7 @@
       <ul>
         <li><a href="index.html">Accueil</a></li>
         <li><a href="menu.html">Menu</a></li>
+        <li><a href="evenements.html">Événements</a></li>
         <li><a href="reservation.html">Réservation</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -108,7 +109,7 @@
       <ul>
         <li><a href="#" data-bf="telephone">Téléphone</a></li>
         <li><a href="#" data-bf="email">Email</a></li>
-        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+        <li><span data-bf="adresse" style="color:rgba(245,240,232,0.4);font-size:13px;">Adresse</span></li>
       </ul>
     </div>
   </div>
@@ -118,6 +119,20 @@
   </div>
 </footer>
 
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', function(e) {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+});
+document.querySelectorAll('a, button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.classList.add('hover'); });
+  el.addEventListener('mouseleave', function() { ring.classList.remove('hover'); });
+});
+</script>
 <script src="main.js"></script>
 </body>
 </html>

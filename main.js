@@ -49,8 +49,8 @@ async function loadRestaurantData() {
           const h = formatHoraire(sched);
           const ferme = !sched || sched.open === false;
           const row = document.createElement('div');
-          row.className = 'horaires-table-row';
-          row.innerHTML = `<span class="jour">${JOURS[dayIndex]}</span><span class="heure${ferme ? ' ferme' : ''}">${h}</span>`;
+          row.className = 'h-row';
+          row.innerHTML = `<span class="h-jour">${JOURS[dayIndex]}</span><span class="h-heure${ferme ? ' ferme' : ''}">${h}</span>`;
           container.appendChild(row);
         });
       });

@@ -9,6 +9,11 @@
 </head>
 <body>
 
+<!-- GRAIN + CURSOR -->
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
   <ul class="nav-links">
@@ -22,7 +27,7 @@
   </a>
   <ul class="nav-links" style="justify-content:flex-end;">
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="reservation.html" class="nav-reserver active" style="background:var(--terre);">Réserver</a></li>
+    <li><a href="reservation.html" class="nav-btn active">Réserver</a></li>
   </ul>
 </nav>
 
@@ -37,7 +42,7 @@
 </section>
 
 <!-- FORMULAIRE -->
-<section class="section section-light" style="padding-top:64px;">
+<section class="section section-dark" style="padding-top:64px;">
   <div class="resa-wrap">
 
     <!-- Infos pratiques -->
@@ -98,7 +103,7 @@
         <div class="form-field">
           <label for="resa-date">Date *</label>
           <input type="date" id="resa-date" required>
-          <p id="resa-jour-ferme" style="display:none;color:#b91c1c;font-size:12px;margin-top:6px;">Le restaurant est fermé ce jour-là. Choisissez une autre date.</p>
+          <p id="resa-jour-ferme" style="display:none;color:#f87171;font-size:12px;margin-top:8px;letter-spacing:.5px;">Le restaurant est fermé ce jour-là. Choisissez une autre date.</p>
         </div>
         <div class="form-field">
           <label for="resa-heure">Heure *</label>
@@ -121,7 +126,7 @@
           </select>
         </div>
         <div class="form-field form-full">
-          <label for="resa-message">Message <span style="color:rgba(122,107,93,0.5);font-weight:300;">(allergies, occasion spéciale…)</span></label>
+          <label for="resa-message">Message <span style="color:rgba(245,240,232,0.2);font-weight:300;">(allergies, occasion spéciale…)</span></label>
           <textarea id="resa-message" rows="3" placeholder="Un message pour nous préparer au mieux…"></textarea>
         </div>
       </div>
@@ -160,6 +165,7 @@
       <ul>
         <li><a href="index.html">Accueil</a></li>
         <li><a href="menu.html">Menu</a></li>
+        <li><a href="evenements.html">Événements</a></li>
         <li><a href="reservation.html">Réservation</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -169,7 +175,7 @@
       <ul>
         <li><a href="#" data-bf="telephone">Téléphone</a></li>
         <li><a href="#" data-bf="email">Email</a></li>
-        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+        <li><span data-bf="adresse" style="color:rgba(245,240,232,0.4);font-size:13px;">Adresse</span></li>
       </ul>
     </div>
   </div>
@@ -179,6 +185,20 @@
   </div>
 </footer>
 
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', function(e) {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+});
+document.querySelectorAll('a, button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.classList.add('hover'); });
+  el.addEventListener('mouseleave', function() { ring.classList.remove('hover'); });
+});
+</script>
 <script src="main.js"></script>
 </body>
 </html>

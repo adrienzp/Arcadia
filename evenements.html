@@ -9,6 +9,11 @@
 </head>
 <body>
 
+<!-- GRAIN + CURSOR -->
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
   <ul class="nav-links">
@@ -22,7 +27,7 @@
   </a>
   <ul class="nav-links" style="justify-content:flex-end;">
     <li><a href="contact.html">Contact</a></li>
-    <li><a href="reservation.html" class="nav-reserver">Réserver</a></li>
+    <li><a href="reservation.html" class="nav-btn">Réserver</a></li>
   </ul>
 </nav>
 
@@ -37,10 +42,10 @@
 </section>
 
 <!-- ÉVÉNEMENTS -->
-<section class="section section-light" style="padding-top:64px;">
-  <div style="max-width:960px;margin:0 auto;padding:0 40px 60px;">
+<section class="section section-dark" style="padding-top:64px;">
+  <div style="max-width:1080px;margin:0 auto;">
     <div id="bf-evenements" class="events-grid">
-      <p style="color:var(--texte-doux);font-size:14px;grid-column:1/-1;text-align:center;padding:40px 0;">Chargement…</p>
+      <p class="no-events">Chargement…</p>
     </div>
   </div>
 </section>
@@ -67,7 +72,7 @@
       <ul>
         <li><a href="#" data-bf="telephone">Téléphone</a></li>
         <li><a href="#" data-bf="email">Email</a></li>
-        <li><a href="#" data-bf="adresse" style="cursor:default;">Adresse</a></li>
+        <li><span data-bf="adresse" style="color:rgba(245,240,232,0.4);font-size:13px;">Adresse</span></li>
       </ul>
     </div>
   </div>
@@ -77,6 +82,20 @@
   </div>
 </footer>
 
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', function(e) {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  ring.style.left   = e.clientX + 'px';
+  ring.style.top    = e.clientY + 'px';
+});
+document.querySelectorAll('a, button').forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.classList.add('hover'); });
+  el.addEventListener('mouseleave', function() { ring.classList.remove('hover'); });
+});
+</script>
 <script src="main.js"></script>
 </body>
 </html>
