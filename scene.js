@@ -18,13 +18,13 @@
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.85;
+  renderer.toneMappingExposure = 1.3;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   /* ── SCENE ────────────────────────────────────────────── */
   var scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x050302);
-  scene.fog = new THREE.FogExp2(0x050302, 0.055);
+  scene.background = new THREE.Color(0x1a0f07);
+  scene.fog = new THREE.FogExp2(0x1a0f07, 0.045);
 
   /* ── CAMERA ───────────────────────────────────────────── */
   var camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.1, 80);
@@ -34,21 +34,26 @@
 
   /* ── MATÉRIAUX ────────────────────────────────────────── */
   var M = {
-    floor:    new THREE.MeshStandardMaterial({ color: 0x1a0e08, roughness: 0.18, metalness: 0.35 }),
-    ceiling:  new THREE.MeshStandardMaterial({ color: 0x0e0a07, roughness: 0.95 }),
-    wall:     new THREE.MeshStandardMaterial({ color: 0x140d09, roughness: 0.88 }),
-    wallDark: new THREE.MeshStandardMaterial({ color: 0x0c0806, roughness: 0.95 }),
-    table:    new THREE.MeshStandardMaterial({ color: 0x3b2818, roughness: 0.72, metalness: 0.06 }),
-    leg:      new THREE.MeshStandardMaterial({ color: 0x271a10, roughness: 0.85, metalness: 0.12 }),
-    plate:    new THREE.MeshStandardMaterial({ color: 0xf2ede5, roughness: 0.28, metalness: 0.08 }),
-    candle:   new THREE.MeshStandardMaterial({ color: 0xfff6e8, roughness: 0.92 }),
-    flame:    new THREE.MeshBasicMaterial({ color: 0xff9922 }),
-    bar:      new THREE.MeshStandardMaterial({ color: 0x2a1a0e, roughness: 0.38, metalness: 0.22 }),
-    gold:     new THREE.MeshStandardMaterial({ color: 0xc4895a, roughness: 0.28, metalness: 0.68 }),
-    glass:    new THREE.MeshStandardMaterial({ color: 0x0a1520, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.55 }),
-    ext:      new THREE.MeshStandardMaterial({ color: 0x0a0704, roughness: 0.95 }),
-    facade:   new THREE.MeshStandardMaterial({ color: 0x1c120a, roughness: 0.85 }),
-    shade:    new THREE.MeshStandardMaterial({ color: 0x1a0e08, roughness: 0.6, side: THREE.DoubleSide }),
+    // Parquet bois chaud — comme le vrai Arcadia
+    floor:    new THREE.MeshStandardMaterial({ color: 0x7a4e2a, roughness: 0.55, metalness: 0.08 }),
+    ceiling:  new THREE.MeshStandardMaterial({ color: 0xd4c4a8, roughness: 0.92 }),
+    // Murs crème/beige chaud
+    wall:     new THREE.MeshStandardMaterial({ color: 0xc8b090, roughness: 0.85 }),
+    wallDark: new THREE.MeshStandardMaterial({ color: 0x3d2a18, roughness: 0.92 }),
+    // Tables bois foncé
+    table:    new THREE.MeshStandardMaterial({ color: 0x5c3a20, roughness: 0.65, metalness: 0.04 }),
+    leg:      new THREE.MeshStandardMaterial({ color: 0x3a2412, roughness: 0.82, metalness: 0.08 }),
+    plate:    new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 0.22, metalness: 0.06 }),
+    candle:   new THREE.MeshStandardMaterial({ color: 0xfff8f0, roughness: 0.9 }),
+    flame:    new THREE.MeshBasicMaterial({ color: 0xff8800 }),
+    // Bar bois sombre
+    bar:      new THREE.MeshStandardMaterial({ color: 0x4a2e18, roughness: 0.32, metalness: 0.18 }),
+    gold:     new THREE.MeshStandardMaterial({ color: 0xc4895a, roughness: 0.22, metalness: 0.72 }),
+    glass:    new THREE.MeshStandardMaterial({ color: 0x8ab0c8, roughness: 0.04, metalness: 0.1, transparent: true, opacity: 0.45 }),
+    ext:      new THREE.MeshStandardMaterial({ color: 0x1a0f07, roughness: 0.95 }),
+    // Façade extérieure sombre (contraste avec l'intérieur chaud)
+    facade:   new THREE.MeshStandardMaterial({ color: 0x2a1e12, roughness: 0.82 }),
+    shade:    new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.55, side: THREE.DoubleSide }),
   };
 
   /* ── HELPERS ──────────────────────────────────────────── */
@@ -74,11 +79,18 @@
   }
 
   /* ── LUMIÈRES GLOBALES ────────────────────────────────── */
-  scene.add(new THREE.AmbientLight(0x1a0c05, 1.1));
-  var dirLight = new THREE.DirectionalLight(0xffcc99, 0.25);
+  // Ambiance générale chaude — comme un bistro bien éclairé le soir
+  scene.add(new THREE.AmbientLight(0xffddb0, 1.8));
+  // Lumière directionnelle douce depuis le plafond
+  var dirLight = new THREE.DirectionalLight(0xffcc88, 0.8);
   dirLight.position.set(0, 8, 0); dirLight.castShadow = true;
   dirLight.shadow.mapSize.set(1024, 1024);
   scene.add(dirLight);
+  // Lumière chaude depuis les murs (simule les appliques)
+  var wallLightL = new THREE.PointLight(0xff9944, 0.6, 12, 1.5);
+  wallLightL.position.set(-5, 2.5, -3); scene.add(wallLightL);
+  var wallLightR = new THREE.PointLight(0xff9944, 0.6, 12, 1.5);
+  wallLightR.position.set(5, 2.5, -3); scene.add(wallLightR);
 
   /* ── SOL ──────────────────────────────────────────────── */
   // Intérieur
@@ -147,11 +159,11 @@
     scene.add(glow);
 
     // PointLight bougie
-    var pl = new THREE.PointLight(0xffaa44, 1.4, 3.8, 2);
+    var pl = new THREE.PointLight(0xffcc66, 2.2, 4.5, 2);
     pl.position.set(x, 1.05, z);
     scene.add(pl);
 
-    candleData.push({ light: pl, flame: flm, glow: glow, offset: Math.random() * Math.PI * 2, base: 1.4 });
+    candleData.push({ light: pl, flame: flm, glow: glow, offset: Math.random() * Math.PI * 2, base: 2.2 });
   }
 
   // 4 tables gauche, 4 droite
@@ -169,7 +181,7 @@
     box(0.012, 0.7, 0.012, M.leg, x, 3.45, z);
     var sh = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.28, 10, 1, true), M.shade);
     sh.position.set(x, 2.95, z); scene.add(sh);
-    var pl = new THREE.PointLight(0xffcc88, 0.55, 5, 2);
+    var pl = new THREE.PointLight(0xffcc88, 1.0, 6, 2);
     pl.position.set(x, 2.7, z); pl.castShadow = false;
     scene.add(pl);
   }
@@ -198,7 +210,7 @@
     cyl(0.045, 0.04, 0.30, 8, bmat, bx2, 2.04, -26.85);
   }
   // Lumière bar
-  var barPL = new THREE.PointLight(0xffbb77, 0.9, 7, 2);
+  var barPL = new THREE.PointLight(0xffcc88, 1.4, 9, 2);
   barPL.position.set(0, 2.2, -22); scene.add(barPL);
   // Petit miroir derrière le bar
   var mirrorM = new THREE.MeshStandardMaterial({ color: 0x8899aa, roughness: 0.0, metalness: 1.0, envMapIntensity: 1.5 });
