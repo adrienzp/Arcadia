@@ -16,7 +16,7 @@ var renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.4;
+renderer.toneMappingExposure = 0.95;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
@@ -30,9 +30,9 @@ var composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 var bloom = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.65,  // strength — réduit pour éviter les halos gigantesques
-  0.4,   // radius
-  0.88   // threshold élevé — seuls les émissifs très brillants bloment
+  0.35,  // strength réduit — plus de "fumée" blanche
+  0.3,   // radius
+  0.92   // threshold très élevé — seuls les ampoules et néons blooment
 );
 composer.addPass(bloom);
 composer.addPass(new OutputPass());
@@ -251,8 +251,8 @@ function pln(w,d,mat,x,y,z,rx,ry) {
 }
 
 /* ── LUMIÈRES ─────────────────────────────────────────── */
-scene.add(new THREE.AmbientLight(0xfff8f0, 4.0));
-var dir = new THREE.DirectionalLight(0xffd090, 1.2);
+scene.add(new THREE.AmbientLight(0xffeecc, 1.2));
+var dir = new THREE.DirectionalLight(0xffc87a, 0.8);
 dir.position.set(3, 8, 5); scene.add(dir);
 // Spots de façade (éclairent la pierre depuis le bas)
 var facL1 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL1.position.set(-4, 0.5, 17.5); facL1.target.position.set(-4, 4, 16); scene.add(facL1); scene.add(facL1.target);
@@ -261,16 +261,16 @@ var facL2 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL2.positi
 var doorSpot = new THREE.SpotLight(0xffcc66, 4.0, 10, Math.PI/6, 0.5); doorSpot.position.set(0, 5.5, 18); doorSpot.target.position.set(0, 1.8, 16.1); scene.add(doorSpot); scene.add(doorSpot.target);
 // Lumière terrasse
 var terL = new THREE.PointLight(0xffcc66, 2.0, 16, 1.6); terL.position.set(0, 3.5, 19.5); scene.add(terL);
-// Zones intérieur — éclairage chaud et lumineux (ambiance Arcadia)
-var entL  = new THREE.PointLight(0xfff0d0, 4.0, 18, 1.5); entL.position.set(0,3.2,10);    scene.add(entL);
-var midL  = new THREE.PointLight(0xfff4e0, 4.5, 22, 1.4); midL.position.set(0,3.0,-2);    scene.add(midL);
-var leftL = new THREE.PointLight(0xfff0d0, 3.5, 16, 1.6); leftL.position.set(-5,2.8,-6);  scene.add(leftL);
-var rightL= new THREE.PointLight(0xfff0d0, 3.5, 16, 1.6); rightL.position.set(5,2.8,-6);  scene.add(rightL);
-var backL = new THREE.PointLight(0xfff4e0, 3.8, 18, 1.5); backL.position.set(0,3.0,-16);  scene.add(backL);
-var barL  = new THREE.PointLight(0xffe8c0, 4.0, 18, 1.4); barL.position.set(0,2.6,-23);   scene.add(barL);
-// Fenêtres lumineuses côté gauche (apport lumière naturelle simulé)
-var winL1 = new THREE.PointLight(0xfff8f0, 3.0, 12, 1.6); winL1.position.set(-W+0.5,2.2,-4);  scene.add(winL1);
-var winL2 = new THREE.PointLight(0xfff8f0, 3.0, 12, 1.6); winL2.position.set(-W+0.5,2.2,-13); scene.add(winL2);
+// Zones intérieur — éclairage chaud, dosé
+var entL  = new THREE.PointLight(0xffcc88, 2.2, 14, 1.8); entL.position.set(0,3.2,10);    scene.add(entL);
+var midL  = new THREE.PointLight(0xffcc88, 2.0, 16, 1.6); midL.position.set(0,3.0,-2);    scene.add(midL);
+var leftL = new THREE.PointLight(0xffbb66, 1.8, 12, 1.8); leftL.position.set(-5,2.8,-6);  scene.add(leftL);
+var rightL= new THREE.PointLight(0xffbb66, 1.8, 12, 1.8); rightL.position.set(5,2.8,-6);  scene.add(rightL);
+var backL = new THREE.PointLight(0xffcc88, 2.0, 16, 1.6); backL.position.set(0,3.0,-16);  scene.add(backL);
+var barL  = new THREE.PointLight(0xffcc88, 2.5, 16, 1.5); barL.position.set(0,2.6,-23);   scene.add(barL);
+// Fenêtres côté gauche — lumière naturelle douce
+var winL1 = new THREE.PointLight(0xfff0e8, 1.4, 10, 1.8); winL1.position.set(-W+0.5,2.2,-4);  scene.add(winL1);
+var winL2 = new THREE.PointLight(0xfff0e8, 1.4, 10, 1.8); winL2.position.set(-W+0.5,2.2,-13); scene.add(winL2);
 // Extérieur nuit (froid)
 var extL  = new THREE.PointLight(0x6677aa, 2.0, 24, 1.5); extL.position.set(0,5,22);    scene.add(extL);
 
@@ -321,7 +321,7 @@ var pilMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.62, color
 
 // ── FENÊTRES côté gauche — lumière naturelle simulée ──
 var winFrameMat = new THREE.MeshStandardMaterial({ color:0xd4c4a8, roughness:0.5 });
-var winGlassMat = new THREE.MeshStandardMaterial({ color:0xfff8f0, emissive:new THREE.Color(0xfff0d8), emissiveIntensity:1.8, roughness:0.05, transparent:true, opacity:0.7 });
+var winGlassMat = new THREE.MeshStandardMaterial({ color:0xfff0d8, emissive:new THREE.Color(0xffead0), emissiveIntensity:0.6, roughness:0.05, transparent:true, opacity:0.65 });
 [[-4, 2.4], [-13, 2.4]].forEach(function(fw) {
   var fz = fw[0], fy = fw[1];
   // Cadre fenêtre
