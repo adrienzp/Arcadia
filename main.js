@@ -68,8 +68,31 @@ async function loadCarteData() {
     const { carte } = await res.json();
     if (!carte || carte.length === 0) return;
 
-    const tabsContainer     = document.getElementById('bf-tabs');
-    const sectionsContainer = document.getElementById('bf-sections');
+    // ── Incontournables (index.html) ─────────────────────────────
+    var ovPlats = document.getElementById('ov-plats-container');
+    if (ovPlats) {
+      var incontournables = [];
+      for (var ci = 0; ci < carte.length; ci++) {
+        var cat = carte[ci];
+        var disponibles = (cat.articles || []).filter(function(a) { return a.disponible !== false; });
+        if (disponibles.length > 0) {
+          incontournables.push(disponibles[0]);
+          if (incontournables.length >= 4) break;
+        }
+      }
+      if (incontournables.length > 0) {
+        ovPlats.innerHTML = incontournables.map(function(a) {
+          var px = a.prix ? String(a.prix).replace('.', ',') + '€' : '';
+          return '<div class="ov-plat">' +
+            '<span class="ov-plat-nom">' + a.nom + '</span>' +
+            (px ? '<span class="ov-plat-prix">' + px + '</span>' : '') +
+            '</div>';
+        }).join('');
+      }
+    }
+
+    var tabsContainer     = document.getElementById('bf-tabs');
+    var sectionsContainer = document.getElementById('bf-sections');
     if (!tabsContainer || !sectionsContainer) return;
 
     tabsContainer.innerHTML = '';
