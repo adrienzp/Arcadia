@@ -149,6 +149,33 @@ var texSign = makeTex(512, 128, function (ctx, w, h) {
   ctx.font='11px Georgia'; ctx.fillStyle='rgba(196,137,90,0.7)'; ctx.fillText('✦  Restaurant  ✦',w/2,h*.84);
 }, 1, 1);
 
+var texCuisine = makeTex(256, 360, function (ctx, w, h) {
+  // Fond bois sombre
+  ctx.fillStyle = '#2e1808'; ctx.fillRect(0, 0, w, h);
+  // Panneau encadré
+  ctx.strokeStyle = '#5a3010'; ctx.lineWidth = 3; ctx.strokeRect(10, 10, w-20, h-20);
+  ctx.strokeStyle = '#4a2808'; ctx.lineWidth = 1; ctx.strokeRect(15, 15, w-30, h-30);
+  // Hublot rond
+  var cx = w/2, cy = h*0.38, r = 36;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+  ctx.fillStyle = '#2a3a48'; ctx.fill();
+  ctx.strokeStyle = '#7a5020'; ctx.lineWidth = 5; ctx.stroke();
+  // Croisillons hublot
+  ctx.strokeStyle = '#6a4018'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx-r, cy); ctx.lineTo(cx+r, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, cy-r); ctx.lineTo(cx, cy+r); ctx.stroke();
+  // Reflet hublot
+  ctx.beginPath(); ctx.arc(cx-10, cy-12, 8, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(255,255,255,0.07)'; ctx.fill();
+  // Texte "Cuisine"
+  ctx.fillStyle = '#c4a060'; ctx.font = 'italic bold 24px Georgia, serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Cuisine', w/2, h*0.68);
+  // Trait décoratif
+  ctx.strokeStyle = '#7a5020'; ctx.lineWidth = 0.8;
+  ctx.beginPath(); ctx.moveTo(35, h*0.76); ctx.lineTo(w-35, h*0.76); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(35, h*0.60); ctx.lineTo(w-35, h*0.60); ctx.stroke();
+}, 1, 1);
+
 function makeArt(sd) {
   return makeTex(256, 320, function (ctx, w, h) {
     var s = sd;
@@ -206,10 +233,11 @@ var M = {
   leg:    new THREE.MeshStandardMaterial({ color:0x2e1a0a, roughness:0.85 }),
   plate:  new THREE.MeshStandardMaterial({ color:0xf8f3ec, roughness:0.2 }),
   cloth:  new THREE.MeshStandardMaterial({ color:0xf0ebe0, roughness:0.85 }),
-  glass:  new THREE.MeshStandardMaterial({ color:0xaaccdd, roughness:0.04, transparent:true, opacity:0.65 }),
+  glass:  new THREE.MeshStandardMaterial({ color:0x556677, roughness:0.04, transparent:true, opacity:0.88, metalness:0.3 }),
   gold:   new THREE.MeshStandardMaterial({ color:0xc4895a, roughness:0.18, metalness:0.78 }),
-  sign:   new THREE.MeshStandardMaterial({ map:texSign,  roughness:0.45 }),
-  menu:   new THREE.MeshStandardMaterial({ map:texMenu,  roughness:0.55 }),
+  sign:   new THREE.MeshStandardMaterial({ map:texSign,    roughness:0.45 }),
+  menu:   new THREE.MeshStandardMaterial({ map:texMenu,    roughness:0.55 }),
+  cuisine:new THREE.MeshStandardMaterial({ map:texCuisine, roughness:0.52 }),
   miroir: new THREE.MeshStandardMaterial({ color:0x90aabb, roughness:0.02, metalness:0.95 }),
   shade:  new THREE.MeshStandardMaterial({ color:0x281400, roughness:0.6, side:THREE.DoubleSide }),
   plant:  new THREE.MeshStandardMaterial({ color:0x2a5018, roughness:0.92 }),
@@ -357,8 +385,10 @@ box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
 // (fond vestibule supprimé — la caméra le traversait)
 
-// Vitrines (rescalées pour W=5.5)
+// Vitrines (rescalées pour W=5.5) + fond sombre intérieur pour bloquer la vue
 [[-3.6],[3.6]].forEach(function(cx) {
+  // Fond opaque côté intérieur (empêche de voir la salle depuis l'ext)
+  box(2.4, 2.8, 0.08, new THREE.MeshStandardMaterial({ color:0x0e0c0a, roughness:0.7 }), cx[0], 1.7, 15.7);
   box(2.2, 2.6, 0.1, M.glass, cx[0], 1.7, 16.12);
   box(2.32, 0.07, 0.16, M.gold, cx[0], 3.02, 16.16);
   box(2.32, 0.07, 0.16, M.gold, cx[0], 0.42, 16.16);
@@ -695,6 +725,26 @@ box(8.0,1.82,0.03,M.miroir,0,2.4,-27.42);
 var barNeon = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.04, 0.04),
   new THREE.MeshStandardMaterial({ color:0xffd090, emissive:new THREE.Color(0xffcc66), emissiveIntensity:3.0 }));
 barNeon.position.set(0, 1.46, -27.1); scene.add(barNeon);
+
+/* ── PORTE CUISINE ─────────────────────────────────────── */
+// À droite du bar, dans le mur du fond
+var DKX = W - 0.9; // centre horizontal porte cuisine
+// Encadrement (retraite dans le mur)
+box(1.05, 2.4, 0.18, new THREE.MeshStandardMaterial({ color:0x1a0e06, roughness:0.8 }), DKX, 1.2, -27.5);
+// Montants cadre
+box(0.08, 2.4, 0.22, M.beam, DKX - 0.54, 1.2, -27.4);
+box(0.08, 2.4, 0.22, M.beam, DKX + 0.54, 1.2, -27.4);
+box(1.08, 0.08, 0.22, M.beam, DKX, 2.45, -27.4);
+box(1.08, 0.06, 0.22, M.gold, DKX, 2.5,  -27.4);
+// Vantail de porte avec texture "Cuisine"
+box(0.9, 2.2, 0.06, M.cuisine, DKX, 1.1, -27.38);
+// Poignée
+cyl(0.014, 0.014, 0.15, 6, M.gold, DKX - 0.34, 1.1, -27.32);
+// Petite lumière au-dessus de la porte cuisine
+var kitL = new THREE.PointLight(0xffe8b0, 1.0, 5, 2.2);
+kitL.position.set(DKX, 2.8, -27.0); scene.add(kitL);
+var kitBulb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), M.bulb);
+kitBulb.position.set(DKX, 2.7, -27.1); scene.add(kitBulb);
 
 /* ── PARTICULES ───────────────────────────────────────── */
 var PC = 100;
