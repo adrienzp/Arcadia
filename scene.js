@@ -257,6 +257,8 @@ dir.position.set(3, 8, 5); scene.add(dir);
 // Spots de façade (éclairent la pierre depuis le bas)
 var facL1 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL1.position.set(-4, 0.5, 17.5); facL1.target.position.set(-4, 4, 16); scene.add(facL1); scene.add(facL1.target);
 var facL2 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL2.position.set( 4, 0.5, 17.5); facL2.target.position.set( 4, 4, 16); scene.add(facL2); scene.add(facL2.target);
+// Spot d'entrée — éclaire la porte en or/cuivré depuis l'extérieur
+var doorSpot = new THREE.SpotLight(0xffcc66, 4.0, 10, Math.PI/6, 0.5); doorSpot.position.set(0, 5.5, 18); doorSpot.target.position.set(0, 1.8, 16.1); scene.add(doorSpot); scene.add(doorSpot.target);
 // Lumière terrasse
 var terL = new THREE.PointLight(0xffcc66, 2.0, 16, 1.6); terL.position.set(0, 3.5, 19.5); scene.add(terL);
 // Zones intérieur
@@ -304,18 +306,24 @@ box(W*2, 0.04, 0.08, M.gold, 0, 1.38, -30.9);
 box(0.2, 0.2, 46, M.beam, 0, 3.92, -6.8);
 
 /* ── FAÇADE RDC ───────────────────────────────────────── */
+// Piliers extérieurs gauche/droit
 box(1.8, 4.4, 0.28, M.facade, -5.8, 2.1, 16.2);
 box(1.8, 4.4, 0.28, M.facade,  5.8, 2.1, 16.2);
+// Piliers intérieurs gauche/droit
 box(1.5, 4.4, 0.28, M.facade, -3.8, 2.1, 16.2);
 box(1.5, 4.4, 0.28, M.facade,  3.8, 2.1, 16.2);
-box(3.2, 0.65, 0.28, M.facade, 0, 3.65, 16.2);
+// Panneaux entre pilier intérieur et cadre de porte (comble le vide de 1.5m de chaque côté)
+box(1.4, 4.4, 0.28, M.facade, -2.3, 2.1, 16.2);
+box(1.4, 4.4, 0.28, M.facade,  2.3, 2.1, 16.2);
+// Bandeau au-dessus de la porte (pleine largeur ouverture)
+box(3.22, 1.25, 0.28, M.facade, 0, 3.72, 16.2);
+// Bandes horizontales
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
-// Fond vestibule chaud — deux panneaux, laissent la porte libre (x=-1.55 à +1.55)
-var vestMat = new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.55, roughness:0.9 });
-box(W-1.65, 4.4, 0.1, vestMat, -(W/2+1.65/2), 2.1, 13.8);  // panneau gauche
-box(W-1.65, 4.4, 0.1, vestMat,  (W/2+1.65/2), 2.1, 13.8);  // panneau droit
+// Fond vestibule chaud pleine largeur (z=10) — visible à travers porte ET vitres
+var vestMat = new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.7, roughness:0.9 });
+box(W*2, 5.0, 0.12, vestMat, 0, 2.5, 10.0);
 
 // Vitrines (plus opaques pour ne pas voir l'intérieur)
 [[-4.9],[4.9]].forEach(function(cx) {
