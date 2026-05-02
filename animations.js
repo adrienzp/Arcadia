@@ -231,19 +231,24 @@
     gsap.from('.page-hero-sub',  { opacity: 0, y: 16, duration: 0.8, delay: 1.0 });
 
     // Reveals classiques sur les autres pages
+    // gsap.fromTo car .reveal a opacity:0 en CSS → gsap.from lirait 0→0 et l'élément resterait invisible
     document.querySelectorAll('.reveal').forEach(function (el) {
-      gsap.from(el, {
-        y: 40, opacity: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 83%' }
-      });
+      gsap.fromTo(el,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 85%' }
+        }
+      );
     });
 
     // Section titles
     document.querySelectorAll('.section-title, .display-title').forEach(function (el) {
-      gsap.from(el, {
-        y: 30, opacity: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 82%' }
-      });
+      gsap.fromTo(el,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 82%' }
+        }
+      );
     });
 
     // Horaires lignes
@@ -262,22 +267,28 @@
     }
 
     // Philo cards
-    gsap.from('.philo-card', {
-      y: 70, opacity: 0, duration: 1.2, ease: 'power3.out', stagger: 0.16,
-      scrollTrigger: { trigger: '.philo-grid', start: 'top 80%' }
-    });
+    gsap.fromTo('.philo-card',
+      { y: 70, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out', stagger: 0.16,
+        scrollTrigger: { trigger: '.philo-grid', start: 'top 80%' }
+      }
+    );
 
     // Menu items
-    gsap.from('.menu-item', {
-      y: 24, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.04,
-      scrollTrigger: { trigger: '#bf-sections', start: 'top 90%' }
-    });
+    gsap.fromTo('.menu-item',
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.04,
+        scrollTrigger: { trigger: '#bf-sections', start: 'top 90%' }
+      }
+    );
 
     // Info rows
-    gsap.from('.info-row', {
-      x: 28, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
-      scrollTrigger: { trigger: '.infos-list', start: 'top 80%' }
-    });
+    gsap.fromTo('.info-row',
+      { x: 28, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: '.infos-list', start: 'top 80%' }
+      }
+    );
   }
 
 })();
