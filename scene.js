@@ -379,6 +379,12 @@ box(1.3, 4.4, 0.28, M.facade, -2.8, 2.1, 16.2);
 box(1.3, 4.4, 0.28, M.facade,  2.8, 2.1, 16.2);
 // Bandeau au-dessus de la porte (pleine largeur ouverture)
 box(3.22, 1.25, 0.28, M.facade, 0, 3.72, 16.2);
+// Panneaux entre montant de porte (x=±1.6) et pilier intérieur (x=±2.15)
+box(0.56, 4.4, 0.28, M.facade, -1.875, 2.1, 16.2);
+box(0.56, 4.4, 0.28, M.facade, +1.875, 2.1, 16.2);
+// Panneaux entre pilier extérieur (x=±5.05) et mur latéral (x=±5.5)
+box(0.47, 4.4, 0.28, M.facade, -5.275, 2.1, 16.2);
+box(0.47, 4.4, 0.28, M.facade, +5.275, 2.1, 16.2);
 // Bandes horizontales
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
@@ -482,7 +488,7 @@ box(3.22, 0.1, 0.24, M.gold, 0, 3.45, 16.1);
 box(3.18, 0.07, 0.26, M.gold, 0, 0.035, 16.1);
 
 var doorL = new THREE.Group();
-doorL.position.set(-1.55, 1.85, 16.1);
+doorL.position.set(-1.52, 1.85, 16.1);
 var dpL = new THREE.Mesh(new THREE.BoxGeometry(1.52, 3.26, 0.08), M.door);
 dpL.position.x = +0.76; doorL.add(dpL);
 [0.72,-0.72].forEach(function(py) {
@@ -494,7 +500,7 @@ hG.rotation.z = Math.PI/2; hG.position.set(+1.36, 0, 0.11); doorL.add(hG);
 scene.add(doorL);
 
 var doorR = new THREE.Group();
-doorR.position.set(1.55, 1.85, 16.1);
+doorR.position.set(1.52, 1.85, 16.1);
 var dpR = new THREE.Mesh(new THREE.BoxGeometry(1.52, 3.26, 0.08), M.door);
 dpR.position.x = -0.76; doorR.add(dpR);
 [0.72,-0.72].forEach(function(py) {
