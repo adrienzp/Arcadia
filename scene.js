@@ -321,9 +321,7 @@ box(3.22, 1.25, 0.28, M.facade, 0, 3.72, 16.2);
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
-// Fond vestibule chaud pleine largeur (z=10) — visible à travers porte ET vitres
-var vestMat = new THREE.MeshStandardMaterial({ color:0xffcc88, emissive:new THREE.Color(0xffaa44), emissiveIntensity:0.7, roughness:0.9 });
-box(W*2, 5.0, 0.12, vestMat, 0, 2.5, 10.0);
+// (fond vestibule supprimé — la caméra le traversait)
 
 // Vitrines (plus opaques pour ne pas voir l'intérieur)
 [[-4.9],[4.9]].forEach(function(cx) {
@@ -400,8 +398,7 @@ box(14, 14, 0.8, nbMat2,  W+19, 7.0, 16.1);
 box(W*2+60, 0.15, 0.3, M.ciment, 0, 0.075, 19.3);
 pln(70, 6, new THREE.MeshStandardMaterial({ color:0x0a0908, roughness:0.98 }), 0, -0.01, 25.5, -Math.PI/2);
 
-// Mur de fond de rue — relie tous les immeubles visuellement
-box(70, 22, 0.5, nbMat2, 0, 11.0, 16.05);
+// (mur de fond de rue supprimé — bloquait la vue sur la porte)
 
 /* ── AUVENT pleine façade ─────────────────────────────── */
 // Barre de fixation
