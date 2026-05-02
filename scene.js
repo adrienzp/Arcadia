@@ -115,28 +115,49 @@ var texBois = makeTex(256, 512, function (ctx, w, h) {
 }, 1, 3);
 
 var texFacade = makeTex(512, 512, function (ctx, w, h) {
-  // Pierre haussmannienne — beige clair
-  ctx.fillStyle='#c8b890'; ctx.fillRect(0,0,w,h);
-  // Grain pierre léger
+  // Crépi / calcaire — base beige sable moyen
+  ctx.fillStyle='#bdb094'; ctx.fillRect(0,0,w,h);
+  // Grain crépi grossier (projection de mortier)
+  ctx.globalAlpha=0.11;
+  for (var i=0; i<16000; i++) {
+    var gx=Math.random()*w, gy=Math.random()*h, gs=0.4+Math.random()*3.8;
+    ctx.fillStyle=Math.random()>.52?'#e2d0b0':'#5c4428';
+    ctx.fillRect(gx,gy,gs,gs);
+  }
+  // Variation colorée bloc à bloc (pierres légèrement différentes)
+  var bs=26;
   ctx.globalAlpha=0.06;
-  for (var i=0; i<6000; i++) {
-    ctx.fillStyle=Math.random()>.5?'#fff':'#000';
-    ctx.fillRect(Math.random()*w,Math.random()*h,1+Math.random()*2,1+Math.random()*2);
-  }
-  // Joints horizontaux (assises de pierre)
-  ctx.globalAlpha=0.14;
-  for (var j=0; j<h; j+=28) {
-    ctx.strokeStyle='#9a8060'; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(w,j); ctx.stroke();
-  }
-  // Joints verticaux décalés (appareillage)
-  ctx.globalAlpha=0.08;
-  for (var r=0; r<h; r+=28) {
-    var off=(Math.floor(r/28)%2)*56;
-    for (var c=off; c<w; c+=112) {
-      ctx.strokeStyle='#9a8060'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(c,r); ctx.lineTo(c,r+28); ctx.stroke();
+  for (var by=0; by<h; by+=bs) {
+    var rowOff=(Math.floor(by/bs)%2)*52;
+    for (var bx=rowOff-52; bx<w+104; bx+=104) {
+      var bv=(Math.random()-.5)*22;
+      ctx.fillStyle='rgba('+Math.round(180+bv)+','+Math.round(165+bv)+','+Math.round(138+bv)+',0.6)';
+      ctx.fillRect(bx,by,104,bs);
     }
+  }
+  // Joints horizontaux bien marqués (assises de pierre)
+  ctx.globalAlpha=0.30;
+  for (var j=0; j<h; j+=bs) {
+    ctx.strokeStyle='#7a6040'; ctx.lineWidth=2.0;
+    ctx.beginPath(); ctx.moveTo(0,j+(Math.random()-.5)*0.6); ctx.lineTo(w,j+(Math.random()-.5)*0.6); ctx.stroke();
+  }
+  // Joints verticaux décalés (appareillage en quinconce)
+  ctx.globalAlpha=0.16;
+  for (var r=0; r<h; r+=bs) {
+    var vOff=(Math.floor(r/bs)%2)*52;
+    for (var c=vOff-52; c<w+104; c+=104) {
+      ctx.strokeStyle='#7a6040'; ctx.lineWidth=1.3;
+      ctx.beginPath(); ctx.moveTo(c+(Math.random()-.5)*1,r); ctx.lineTo(c+(Math.random()-.5)*1,r+bs); ctx.stroke();
+    }
+  }
+  // Taches de vieillissement (lichens, humidité légère)
+  ctx.globalAlpha=0.035;
+  for (var p=0; p<18; p++) {
+    var px=Math.random()*w, py=Math.random()*h;
+    var rg=ctx.createRadialGradient(px,py,0,px,py,22+Math.random()*38);
+    rg.addColorStop(0,'rgba(70,85,50,0.55)');
+    rg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=rg; ctx.fillRect(px-60,py-60,120,120);
   }
   ctx.globalAlpha=1;
 }, 2, 3);
@@ -371,12 +392,30 @@ box(W*2, 0.04, 0.08, M.gold, 0, 1.38, -30.9);
 box(0.2, 0.2, 46, M.beam, 0, 3.92, -6.8);
 
 /* ── FAÇADE RDC ───────────────────────────────────────── */
-// Piliers extérieurs gauche/droit (rescalés pour W=5.5)
-box(1.6, 4.4, 0.28, M.facade, -4.25, 2.1, 16.2);
-box(1.6, 4.4, 0.28, M.facade,  4.25, 2.1, 16.2);
-// Piliers intérieurs gauche/droit
-box(1.3, 4.4, 0.28, M.facade, -2.8, 2.1, 16.2);
-box(1.3, 4.4, 0.28, M.facade,  2.8, 2.1, 16.2);
+// Fenêtres dans les piliers — 2 par côté (outer x=±4.25 + inner x=±2.8)
+var winBackFacade = new THREE.MeshStandardMaterial({ color:0x0a0806, roughness:0.8 });
+var winGlassExt   = new THREE.MeshStandardMaterial({
+  color:0xffa060, emissive:new THREE.Color(0xff8030), emissiveIntensity:0.18,
+  roughness:0.06, transparent:true, opacity:0.74, metalness:0.25
+});
+// [cx, largeur_pilier, largeur_fenêtre]
+[[-4.25,1.6,0.85],[-2.8,1.3,0.70],[2.8,1.3,0.70],[4.25,1.6,0.85]].forEach(function(p) {
+  var cx=p[0], tw=p[1], ww=p[2], jw=(tw-ww)/2;
+  // Cadre pierre : bandeau bas, haut, montants G et D
+  box(tw, 0.7,  0.28, M.facade, cx,            0.35, 16.2);
+  box(tw, 2.2,  0.28, M.facade, cx,            3.3,  16.2);
+  box(jw, 1.5,  0.28, M.facade, cx-ww/2-jw/2,  1.45, 16.2);
+  box(jw, 1.5,  0.28, M.facade, cx+ww/2+jw/2,  1.45, 16.2);
+  // Fond opaque (bloque la vue intérieure à travers la fenêtre)
+  box(ww+0.1, 1.6, 0.06, winBackFacade, cx, 1.45, 15.88);
+  // Vitrage teinté chaud (lueur intérieure)
+  box(ww,     1.5, 0.08, winGlassExt,   cx, 1.45, 16.26);
+  // Encadrement doré : linteau, appui, pieds-droits
+  box(ww+0.10, 0.07, 0.14, M.gold, cx,              2.205, 16.24);
+  box(ww+0.10, 0.07, 0.14, M.gold, cx,              0.695, 16.24);
+  box(0.07, 1.64,   0.14, M.gold, cx-ww/2-0.035,   1.45,  16.24);
+  box(0.07, 1.64,   0.14, M.gold, cx+ww/2+0.035,   1.45,  16.24);
+});
 // Bandeau au-dessus de la porte (pleine largeur ouverture)
 box(3.22, 1.25, 0.28, M.facade, 0, 3.72, 16.2);
 // Panneaux entre montant de porte (x=±1.6) et pilier intérieur (x=±2.15)
@@ -388,19 +427,6 @@ box(0.47, 4.4, 0.28, M.facade, +5.275, 2.1, 16.2);
 // Bandes horizontales
 box(W*2+0.5, 0.14, 0.38, M.gold,   0, 4.26, 16.2);
 box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
-
-// (fond vestibule supprimé — la caméra le traversait)
-
-// Vitrines (rescalées pour W=5.5) + fond sombre intérieur pour bloquer la vue
-[[-3.6],[3.6]].forEach(function(cx) {
-  // Fond opaque côté intérieur (empêche de voir la salle depuis l'ext)
-  box(2.4, 2.8, 0.08, new THREE.MeshStandardMaterial({ color:0x0e0c0a, roughness:0.7 }), cx[0], 1.7, 15.7);
-  box(2.2, 2.6, 0.1, M.glass, cx[0], 1.7, 16.12);
-  box(2.32, 0.07, 0.16, M.gold, cx[0], 3.02, 16.16);
-  box(2.32, 0.07, 0.16, M.gold, cx[0], 0.42, 16.16);
-  box(0.07, 2.68, 0.16, M.gold, cx[0]-1.16, 1.7, 16.16);
-  box(0.07, 2.68, 0.16, M.gold, cx[0]+1.16, 1.7, 16.16);
-});
 
 // Enseigne
 box(4.5, 0.68, 0.08, M.sign,  0, 3.1, 16.22);
