@@ -16,12 +16,12 @@ var renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.4;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
-scene.background = new THREE.Color(0x060c1a);
-scene.fog = new THREE.Fog(0x060c1a, 22, 55);
+scene.background = new THREE.Color(0x080608);
+scene.fog = new THREE.Fog(0x080608, 22, 55);
 
 var camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerHeight, 0.1, 70);
 
@@ -49,7 +49,7 @@ function makeTex(w, h, fn, rS, rT) {
 }
 
 var texFloor = makeTex(512, 512, function (ctx, w, h) {
-  var cols = ['#8a5530','#7a4a26','#956040','#6e4020'];
+  var cols = ['#d4b878','#c8a860','#dcc888','#bea058'];
   var ph = 48;
   for (var y = 0; y < h; y += ph) {
     ctx.fillStyle = cols[Math.floor(y/ph) % cols.length];
@@ -69,7 +69,7 @@ var texFloor = makeTex(512, 512, function (ctx, w, h) {
 }, 3, 9);
 
 var texWall = makeTex(512, 512, function (ctx, w, h) {
-  ctx.fillStyle = '#b8a07a'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#f0ece4'; ctx.fillRect(0, 0, w, h);
   // Grain plâtre plus marqué
   ctx.globalAlpha = 0.07;
   for (var i = 0; i < 9000; i++) {
@@ -195,14 +195,14 @@ var texMenu = makeTex(256, 360, function (ctx, w, h) {
 /* ── MATÉRIAUX ────────────────────────────────────────── */
 var M = {
   floor:  new THREE.MeshStandardMaterial({ map:texFloor, roughness:0.6,  metalness:0.03 }),
-  ceil:   new THREE.MeshStandardMaterial({ color:0xd0bfa0, roughness:0.92 }),
+  ceil:   new THREE.MeshStandardMaterial({ color:0xf5f2ec, roughness:0.92 }),
   wall:   new THREE.MeshStandardMaterial({ map:texWall,  roughness:0.88, side:THREE.DoubleSide }),
   pave:   new THREE.MeshStandardMaterial({ map:texPave,  roughness:0.94 }),
   facade: new THREE.MeshStandardMaterial({ map:texFacade,roughness:0.86 }),
   door:   new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.52, metalness:0.05 }),
   bois:   new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.62, metalness:0.04 }),
-  table:  new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.55, metalness:0.05, color:0x9a6840 }),
-  beam:   new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.75, color:0x5a3820 }),
+  table:  new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.55, metalness:0.05, color:0xc49a68 }),
+  beam:   new THREE.MeshStandardMaterial({ map:texBois,  roughness:0.75, color:0x7a5838 }),
   leg:    new THREE.MeshStandardMaterial({ color:0x2e1a0a, roughness:0.85 }),
   plate:  new THREE.MeshStandardMaterial({ color:0xf8f3ec, roughness:0.2 }),
   cloth:  new THREE.MeshStandardMaterial({ color:0xf0ebe0, roughness:0.85 }),
@@ -214,7 +214,7 @@ var M = {
   shade:  new THREE.MeshStandardMaterial({ color:0x281400, roughness:0.6, side:THREE.DoubleSide }),
   plant:  new THREE.MeshStandardMaterial({ color:0x2a5018, roughness:0.92 }),
   pot:    new THREE.MeshStandardMaterial({ color:0x8c6248, roughness:0.72 }),
-  banq:   new THREE.MeshStandardMaterial({ color:0x5c2e18, roughness:0.72 }),
+  banq:   new THREE.MeshStandardMaterial({ color:0x7a5030, roughness:0.72 }),
   frame:  new THREE.MeshStandardMaterial({ color:0x2a1a0a, roughness:0.3, metalness:0.6 }),
   art1:   new THREE.MeshStandardMaterial({ map:makeArt(123), roughness:0.6 }),
   art2:   new THREE.MeshStandardMaterial({ map:makeArt(456), roughness:0.6 }),
@@ -251,8 +251,8 @@ function pln(w,d,mat,x,y,z,rx,ry) {
 }
 
 /* ── LUMIÈRES ─────────────────────────────────────────── */
-scene.add(new THREE.AmbientLight(0xffddaa, 1.4));
-var dir = new THREE.DirectionalLight(0xffc87a, 0.9);
+scene.add(new THREE.AmbientLight(0xfff8f0, 4.0));
+var dir = new THREE.DirectionalLight(0xffd090, 1.2);
 dir.position.set(3, 8, 5); scene.add(dir);
 // Spots de façade (éclairent la pierre depuis le bas)
 var facL1 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL1.position.set(-4, 0.5, 17.5); facL1.target.position.set(-4, 4, 16); scene.add(facL1); scene.add(facL1.target);
@@ -261,12 +261,16 @@ var facL2 = new THREE.SpotLight(0xffd090, 3.5, 12, Math.PI/5, 0.4); facL2.positi
 var doorSpot = new THREE.SpotLight(0xffcc66, 4.0, 10, Math.PI/6, 0.5); doorSpot.position.set(0, 5.5, 18); doorSpot.target.position.set(0, 1.8, 16.1); scene.add(doorSpot); scene.add(doorSpot.target);
 // Lumière terrasse
 var terL = new THREE.PointLight(0xffcc66, 2.0, 16, 1.6); terL.position.set(0, 3.5, 19.5); scene.add(terL);
-// Zones intérieur
-var entL  = new THREE.PointLight(0xffaa55, 2.5, 14, 1.8); entL.position.set(0,3.2,10);   scene.add(entL);
-var midL  = new THREE.PointLight(0xffcc88, 2.2, 18, 1.5); midL.position.set(0,3.0,-2);   scene.add(midL);
-var leftL = new THREE.PointLight(0xffbb66, 2.0, 14, 1.8); leftL.position.set(-5,2.8,-6); scene.add(leftL);
-var rightL= new THREE.PointLight(0xffbb66, 2.0, 14, 1.8); rightL.position.set(5,2.8,-6); scene.add(rightL);
-var barL  = new THREE.PointLight(0xffcc88, 2.8, 16, 1.5); barL.position.set(0,2.6,-23);  scene.add(barL);
+// Zones intérieur — éclairage chaud et lumineux (ambiance Arcadia)
+var entL  = new THREE.PointLight(0xfff0d0, 4.0, 18, 1.5); entL.position.set(0,3.2,10);    scene.add(entL);
+var midL  = new THREE.PointLight(0xfff4e0, 4.5, 22, 1.4); midL.position.set(0,3.0,-2);    scene.add(midL);
+var leftL = new THREE.PointLight(0xfff0d0, 3.5, 16, 1.6); leftL.position.set(-5,2.8,-6);  scene.add(leftL);
+var rightL= new THREE.PointLight(0xfff0d0, 3.5, 16, 1.6); rightL.position.set(5,2.8,-6);  scene.add(rightL);
+var backL = new THREE.PointLight(0xfff4e0, 3.8, 18, 1.5); backL.position.set(0,3.0,-16);  scene.add(backL);
+var barL  = new THREE.PointLight(0xffe8c0, 4.0, 18, 1.4); barL.position.set(0,2.6,-23);   scene.add(barL);
+// Fenêtres lumineuses côté gauche (apport lumière naturelle simulé)
+var winL1 = new THREE.PointLight(0xfff8f0, 3.0, 12, 1.6); winL1.position.set(-W+0.5,2.2,-4);  scene.add(winL1);
+var winL2 = new THREE.PointLight(0xfff8f0, 3.0, 12, 1.6); winL2.position.set(-W+0.5,2.2,-13); scene.add(winL2);
 // Extérieur nuit (froid)
 var extL  = new THREE.PointLight(0x6677aa, 2.0, 24, 1.5); extL.position.set(0,5,22);    scene.add(extL);
 
@@ -291,12 +295,45 @@ box(0.35, 11, 47, M.bldg, -W-0.18, 5.4, -7.5);
 box(0.35, 11, 47, M.bldg,  W+0.18, 5.4, -7.5);
 
 // Lambris bas (wainscoting bois sombre — de 0 à 1.38m)
-var lambrisMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.65, color:0x4a3018 });
+var lambrisMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.65, color:0x9a7848 });
 pln(46, 1.38, lambrisMat, -W+0.06, 0.69, -6.8, 0, Math.PI/2);
 pln(46, 1.38, lambrisMat,  W-0.06, 0.69, -6.8, 0, -Math.PI/2);
 // Plinthes + cimaises
 box(0.08, 0.18, 46, M.beam, -W+0.04, 0.09, -6.8);
 box(0.08, 0.18, 46, M.beam,  W-0.04, 0.09, -6.8);
+
+// ── PILASTRES — lignes verticales sur les murs pour perspective ──
+// Pilastres mur gauche (z = -3, -8, -13, -18, -23)
+var pilMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.62, color:0xb08858 });
+[-3, -8, -13, -18, -23].forEach(function(pz) {
+  // Corps du pilastre (bois clair, légèrement saillant)
+  box(0.1, 4.4, 0.12, pilMat, -W+0.06, 2.1, pz);
+  // Chapiteaux haut/bas
+  box(0.14, 0.08, 0.16, M.gold, -W+0.06, 4.1, pz);
+  box(0.14, 0.08, 0.16, M.gold, -W+0.06, 0.24, pz);
+});
+// Pilastres mur droit
+[-3, -8, -13, -18, -23].forEach(function(pz) {
+  box(0.1, 4.4, 0.12, pilMat,  W-0.06, 2.1, pz);
+  box(0.14, 0.08, 0.16, M.gold,  W-0.06, 4.1, pz);
+  box(0.14, 0.08, 0.16, M.gold,  W-0.06, 0.24, pz);
+});
+
+// ── FENÊTRES côté gauche — lumière naturelle simulée ──
+var winFrameMat = new THREE.MeshStandardMaterial({ color:0xd4c4a8, roughness:0.5 });
+var winGlassMat = new THREE.MeshStandardMaterial({ color:0xfff8f0, emissive:new THREE.Color(0xfff0d8), emissiveIntensity:1.8, roughness:0.05, transparent:true, opacity:0.7 });
+[[-4, 2.4], [-13, 2.4]].forEach(function(fw) {
+  var fz = fw[0], fy = fw[1];
+  // Cadre fenêtre
+  box(0.1, 1.8, 0.12, winFrameMat, -W+0.05, fy, fz);
+  // Vitrage lumineux
+  box(0.04, 1.6, 1.1, winGlassMat, -W+0.04, fy, fz);
+  // Traverses
+  box(0.08, 0.05, 1.16, winFrameMat, -W+0.06, fy+0.78, fz);
+  box(0.08, 0.05, 1.16, winFrameMat, -W+0.06, fy-0.78, fz);
+  box(0.08, 1.66, 0.05, winFrameMat, -W+0.06, fy, fz-0.58);
+  box(0.08, 1.66, 0.05, winFrameMat, -W+0.06, fy, fz+0.58);
+});
 box(0.06, 0.04, 46, M.gold, -W+0.04, 1.38, -6.8);
 box(0.06, 0.04, 46, M.gold,  W-0.04, 1.38, -6.8);
 box(W*2, 0.04, 0.08, M.gold, 0, 1.38, -30.9);
@@ -546,7 +583,7 @@ box(0.03, 2.28, 1.68, M.miroir, W-0.06, 2.4, -14);
 /* ── BANQUETTE ────────────────────────────────────────── */
 box(1.4, 0.16, 14, M.banq, -W+1.1, 0.5, -7);
 box(0.12, 0.52, 14, M.banq, -W+0.38, 0.92, -7);
-box(1.18, 0.08, 13.8, new THREE.MeshStandardMaterial({ color:0x7a3a20, roughness:0.75 }), -W+1.1, 0.6, -7);
+box(1.18, 0.08, 13.8, new THREE.MeshStandardMaterial({ color:0xa07848, roughness:0.75 }), -W+1.1, 0.6, -7);
 
 /* ── PUPITRE D'ACCUEIL ────────────────────────────────── */
 box(0.58, 1.1, 0.48, M.bois,  1.5, 0.55, 12.5);
@@ -570,7 +607,6 @@ function tableRect(x, z) {
   box(1.46, 0.07, 0.9, M.table, x, 0.8, z);
   cyl(0.04, 0.04, 0.8, 7, M.leg, x, 0.4, z);
   cyl(0.3, 0.3, 0.04, 10, M.leg, x, 0.02, z);
-  box(1.52, 0.005, 0.95, M.cloth, x, 0.84, z);
   cyl(0.22, 0.22, 0.015, 14, M.plate, x, 0.85, z-0.22);
   cyl(0.22, 0.22, 0.015, 14, M.plate, x, 0.85, z+0.22);
   cyl(0.05, 0.038, 0.18, 8, M.glass, x+0.28, 0.94, z-0.22);
@@ -587,7 +623,6 @@ function tableRect(x, z) {
 function tableRnd(x, z) {
   cyl(0.55, 0.55, 0.07, 18, M.table, x, 0.8, z);
   cyl(0.04, 0.04, 0.8, 7, M.leg, x, 0.4, z);
-  cyl(0.58, 0.58, 0.005, 18, M.cloth, x, 0.84, z);
   cyl(0.22, 0.22, 0.015, 14, M.plate, x-0.22, 0.85, z);
   cyl(0.22, 0.22, 0.015, 14, M.plate, x+0.22, 0.85, z);
   cyl(0.05, 0.038, 0.18, 8, M.glass, x, 0.94, z-0.3);
