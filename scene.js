@@ -275,7 +275,7 @@ var winL2 = new THREE.PointLight(0xfff0e8, 1.4, 10, 1.8); winL2.position.set(-W+
 var extL  = new THREE.PointLight(0x6677aa, 2.0, 24, 1.5); extL.position.set(0,5,22);    scene.add(extL);
 
 /* ── ARCHITECTURE ─────────────────────────────────────── */
-var W = 7.5;  // demi-largeur intérieure
+var W = 5.5;  // demi-largeur intérieure (11m total, bistrot réaliste)
 
 // SOL — s'arrête à la façade (z≈16)
 pln(W*2, 46, M.floor,  0, 0.001, -6.8, -Math.PI/2);
@@ -343,15 +343,12 @@ box(W*2, 0.04, 0.08, M.gold, 0, 1.38, -30.9);
 box(0.2, 0.2, 46, M.beam, 0, 3.92, -6.8);
 
 /* ── FAÇADE RDC ───────────────────────────────────────── */
-// Piliers extérieurs gauche/droit
-box(1.8, 4.4, 0.28, M.facade, -5.8, 2.1, 16.2);
-box(1.8, 4.4, 0.28, M.facade,  5.8, 2.1, 16.2);
+// Piliers extérieurs gauche/droit (rescalés pour W=5.5)
+box(1.6, 4.4, 0.28, M.facade, -4.25, 2.1, 16.2);
+box(1.6, 4.4, 0.28, M.facade,  4.25, 2.1, 16.2);
 // Piliers intérieurs gauche/droit
-box(1.5, 4.4, 0.28, M.facade, -3.8, 2.1, 16.2);
-box(1.5, 4.4, 0.28, M.facade,  3.8, 2.1, 16.2);
-// Panneaux entre pilier intérieur et cadre de porte (comble le vide de 1.5m de chaque côté)
-box(1.4, 4.4, 0.28, M.facade, -2.3, 2.1, 16.2);
-box(1.4, 4.4, 0.28, M.facade,  2.3, 2.1, 16.2);
+box(1.3, 4.4, 0.28, M.facade, -2.8, 2.1, 16.2);
+box(1.3, 4.4, 0.28, M.facade,  2.8, 2.1, 16.2);
 // Bandeau au-dessus de la porte (pleine largeur ouverture)
 box(3.22, 1.25, 0.28, M.facade, 0, 3.72, 16.2);
 // Bandes horizontales
@@ -360,8 +357,8 @@ box(W*2+0.5, 0.28, 0.38, M.ciment, 0, 0.14, 16.2);
 
 // (fond vestibule supprimé — la caméra le traversait)
 
-// Vitrines (plus opaques pour ne pas voir l'intérieur)
-[[-4.9],[4.9]].forEach(function(cx) {
+// Vitrines (rescalées pour W=5.5)
+[[-3.6],[3.6]].forEach(function(cx) {
   box(2.2, 2.6, 0.1, M.glass, cx[0], 1.7, 16.12);
   box(2.32, 0.07, 0.16, M.gold, cx[0], 3.02, 16.16);
   box(2.32, 0.07, 0.16, M.gold, cx[0], 0.42, 16.16);
@@ -377,7 +374,7 @@ box(4.62, 0.8, 0.06, M.gold, 0, 3.1, 16.26);
 // Étage 1
 box(W*2+0.5, 3.2, 0.32, M.bldg, 0, 5.94, 16.2);
 box(W*2+0.5, 0.1, 0.35, M.gold, 0, 7.52, 16.2);
-var w1pos = [-6.2,-3.7,-1.2,1.2,3.7,6.2];
+var w1pos = [-4.5,-2.7,-0.9,0.9,2.7,4.5];
 var w1lit  = [true,false,true,true,false,true];
 w1pos.forEach(function(wx,wi) {
   box(1.4, 2.0, 0.1, wi%3===0?M.winLit:wi%3===1?M.winDim:M.winOff, wx, 5.94, 16.3);
@@ -390,7 +387,7 @@ w1pos.forEach(function(wx,wi) {
 // Étage 2
 box(W*2+0.5, 2.9, 0.32, M.bldg, 0, 8.98, 16.2);
 box(W*2+0.5, 0.1, 0.35, M.gold, 0, 10.42, 16.2);
-var w2pos = [-5.5,-2.5,0,2.5,5.5];
+var w2pos = [-4.0,-2.0,0,2.0,4.0];
 w2pos.forEach(function(wx,wi) {
   box(1.3, 1.8, 0.1, wi%2===0?M.winDim:M.winLit, wx, 8.98, 16.3);
   box(0.07, 1.9, 0.15, M.bldg, wx-0.69, 8.98, 16.3);
@@ -581,9 +578,9 @@ box(0.06, 2.4, 1.8, M.frame, W-0.04, 2.4, -14);
 box(0.03, 2.28, 1.68, M.miroir, W-0.06, 2.4, -14);
 
 /* ── BANQUETTE ────────────────────────────────────────── */
-box(1.4, 0.16, 14, M.banq, -W+1.1, 0.5, -7);
-box(0.12, 0.52, 14, M.banq, -W+0.38, 0.92, -7);
-box(1.18, 0.08, 13.8, new THREE.MeshStandardMaterial({ color:0xa07848, roughness:0.75 }), -W+1.1, 0.6, -7);
+box(0.8, 0.16, 14, M.banq, -W+0.62, 0.5, -7);
+box(0.12, 0.52, 14, M.banq, -W+0.1, 0.92, -7);
+box(0.72, 0.08, 13.8, new THREE.MeshStandardMaterial({ color:0xa07848, roughness:0.75 }), -W+0.62, 0.6, -7);
 
 /* ── PUPITRE D'ACCUEIL ────────────────────────────────── */
 box(0.58, 1.1, 0.48, M.bois,  1.5, 0.55, 12.5);
@@ -747,8 +744,8 @@ function tick() {
   camera.position.set(sm.px,sm.py,sm.pz);
   lv.set(sm.lx,sm.ly,sm.lz); camera.lookAt(lv);
 
-  // Portes
-  var dp=Math.max(0,Math.min(1,(prog-0.14)/0.12)), ds=dp*dp*(3-2*dp);
+  // Portes — ouverture anticipée dès prog=0.04 (avant que la caméra arrive)
+  var dp=Math.max(0,Math.min(1,(prog-0.04)/0.10)), ds=dp*dp*(3-2*dp);
   doorAng+=(ds*1.45-doorAng)*0.06;
   doorL.rotation.y=+(0.04+doorAng);
   doorR.rotation.y=-(0.04+doorAng);
