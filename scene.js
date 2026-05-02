@@ -318,9 +318,9 @@ pln(46, 4.4, M.wall, -W, 2.1, -6.8, 0,  Math.PI/2);
 pln(46, 4.4, M.wall,  W, 2.1, -6.8, 0, -Math.PI/2);
 pln(W*2, 4.4, M.wall, 0, 2.1, -31);
 
-// Murs extérieurs du bâtiment (épais, visibles de la rue) — front face aligné avec la façade (z=16)
-box(0.35, 11, 47, M.bldg, -W-0.18, 5.4, -7.5);
-box(0.35, 11, 47, M.bldg,  W+0.18, 5.4, -7.5);
+// Murs extérieurs du bâtiment (épais, visibles de la rue) — front face à z≈16.35 pour recouvrir la façade
+box(0.35, 11, 47.7, M.bldg, -W-0.18, 5.4, -7.15);
+box(0.35, 11, 47.7, M.bldg,  W+0.18, 5.4, -7.15);
 
 // Lambris bas (wainscoting bois sombre — de 0 à 1.38m)
 var lambrisMat = new THREE.MeshStandardMaterial({ map:texBois, roughness:0.65, color:0x9a7848 });
@@ -797,8 +797,8 @@ function tick() {
   // Portes — ouverture anticipée dès prog=0.04 (avant que la caméra arrive)
   var dp=Math.max(0,Math.min(1,(prog-0.04)/0.10)), ds=dp*dp*(3-2*dp);
   doorAng+=(ds*1.45-doorAng)*0.06;
-  doorL.rotation.y=+(0.04+doorAng);
-  doorR.rotation.y=-(0.04+doorAng);
+  doorL.rotation.y=+doorAng;
+  doorR.rotation.y=-doorAng;
 
   // Flammes (bloom fait le reste)
   flameMeshes.forEach(function(c) {
