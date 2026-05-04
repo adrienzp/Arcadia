@@ -270,14 +270,16 @@ function initReservationForm() {
     btn.textContent = 'Envoi en cours…';
 
     const body = {
-      nom:       document.getElementById('resa-nom').value,
-      email:     document.getElementById('resa-email').value,
-      telephone: document.getElementById('resa-tel').value,
-      personnes: document.getElementById('resa-personnes').value,
-      date:      document.getElementById('resa-date').value,
-      heure:     document.getElementById('resa-heure').value,
-      message:   document.getElementById('resa-message').value,
-      slug:      RESTAURANT_SLUG,
+      nom:              document.getElementById('resa-nom').value,
+      email:            document.getElementById('resa-email').value,
+      telephone:        document.getElementById('resa-tel').value,
+      personnes:        document.getElementById('resa-personnes').value,
+      date:             document.getElementById('resa-date').value,
+      heure:            document.getElementById('resa-heure').value,
+      message:          document.getElementById('resa-message').value,
+      slug:             RESTAURANT_SLUG,
+      consent_rgpd:     document.getElementById('resa-consent-rgpd')?.checked === true,
+      consent_feedback: document.getElementById('resa-consent-feedback')?.checked === true,
     };
 
     try {

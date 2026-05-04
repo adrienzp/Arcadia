@@ -4,15 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Réservation — Arcadia</title>
-<meta name="description" content="Réservez votre table chez Arcadia, restaurant à Lille.">
+<meta name="description" content="Réservez votre table chez Arcadia, restaurant à Lille. 30 rue Gosselet — 03 20 42 96 02.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- GRAIN + CURSOR -->
 <div class="grain"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
@@ -60,7 +58,7 @@
       <div class="resa-info-card">
         <div class="resa-info-icon">📞</div>
         <div class="resa-info-titre">Par téléphone</div>
-        <div class="resa-info-val"><a href="#" data-bf="telephone" style="color:inherit;">Nous appeler</a></div>
+        <div class="resa-info-val"><a href="tel:0320429602" data-bf="telephone" style="color:inherit;">03 20 42 96 02</a></div>
       </div>
     </div>
 
@@ -126,8 +124,26 @@
           </select>
         </div>
         <div class="form-field form-full">
-          <label for="resa-message">Message <span style="color:rgba(245,240,232,0.2);font-weight:300;">(allergies, occasion spéciale…)</span></label>
+          <label for="resa-message">Message <span style="color:rgba(244,242,236,0.2);font-weight:300;">(allergies, occasion spéciale…)</span></label>
           <textarea id="resa-message" rows="3" placeholder="Un message pour nous préparer au mieux…"></textarea>
+        </div>
+      </div>
+
+      <!-- RGPD -->
+      <div class="consent-block reveal">
+        <div class="consent-row">
+          <input type="checkbox" id="resa-consent-rgpd" required>
+          <label for="resa-consent-rgpd">
+            J'accepte les <a href="#" id="link-cgv" target="_blank" rel="noopener">Conditions Générales de Vente</a>
+            et la <a href="#" id="link-confidentialite" target="_blank" rel="noopener">Politique de confidentialité</a>.
+            <span class="consent-required">*</span>
+          </label>
+        </div>
+        <div class="consent-row">
+          <input type="checkbox" id="resa-consent-feedback">
+          <label for="resa-consent-feedback">
+            J'accepte de recevoir un email de suivi après mon repas pour donner mon avis (facultatif).
+          </label>
         </div>
       </div>
 
@@ -135,7 +151,7 @@
         <button type="submit" class="form-submit">Envoyer ma demande</button>
         <p class="form-note">
           Votre réservation sera confirmée par email.<br>
-          En cas d'empêchement, merci de nous prévenir au plus tôt.
+          En cas d'empêchement, merci de nous prévenir au plus tôt au 03 20 42 96 02.
         </p>
       </div>
     </form>
@@ -158,7 +174,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-logo">Arcadia</div>
-      <p>Cuisine fraîche, locale et de saison.<br>Frais · Fait maison · De saison.</p>
+      <p>Cuisine fraîche, locale et de saison.<br>30 rue Gosselet, 59000 Lille.</p>
     </div>
     <div class="footer-col">
       <h4>Navigation</h4>
@@ -173,9 +189,9 @@
     <div class="footer-col">
       <h4>Contact</h4>
       <ul>
-        <li><a href="#" data-bf="telephone">Téléphone</a></li>
+        <li><a href="tel:0320429602" data-bf="telephone">03 20 42 96 02</a></li>
         <li><a href="#" data-bf="email">Email</a></li>
-        <li><span data-bf="adresse" style="color:rgba(245,240,232,0.4);font-size:13px;">Adresse</span></li>
+        <li><span data-bf="adresse" style="color:rgba(244,242,236,0.4);font-size:13px;">30 rue Gosselet, Lille</span></li>
       </ul>
     </div>
   </div>
@@ -188,6 +204,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
+<script>
+// Injecte les liens RGPD depuis la config du restaurant
+(function() {
+  var CGV_FALLBACK = 'https://www.burstflow.fr/cgv';
+  var CONF_FALLBACK = 'https://www.burstflow.fr/confidentialite';
+  var SLUG = 'arcadia';
+  fetch('https://www.burstflow.fr/api/public/restaurant/' + SLUG)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var cgv  = (d.config && d.config.url_cgv)  || CGV_FALLBACK;
+      var conf = (d.config && d.config.url_confidentialite) || CONF_FALLBACK;
+      document.getElementById('link-cgv').href = cgv;
+      document.getElementById('link-confidentialite').href = conf;
+    })
+    .catch(function() {
+      document.getElementById('link-cgv').href = CGV_FALLBACK;
+      document.getElementById('link-confidentialite').href = CONF_FALLBACK;
+    });
+})();
+</script>
 <script src="animations.js"></script>
 </body>
 </html>

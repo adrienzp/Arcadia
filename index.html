@@ -4,15 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arcadia — Restaurant à Lille</title>
-<meta name="description" content="Arcadia, restaurant à Lille. Cuisine fraîche, locale et de saison. Réservez votre table.">
+<meta name="description" content="Arcadia, restaurant à Lille. Cuisine fraîche, locale et de saison. 30 rue Gosselet — Réservez votre table.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- GRAIN + CURSOR -->
 <div class="grain"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- LOADER -->
@@ -20,9 +17,6 @@
   <div class="loader-logo">Arcadia</div>
   <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
 </div>
-
-<!-- CANVAS 3D (fixed background) -->
-<canvas id="scene-canvas"></canvas>
 
 <!-- NAV -->
 <nav id="navbar" class="on-dark">
@@ -41,192 +35,248 @@
   </ul>
 </nav>
 
-<!-- ═══ SCROLL DRIVER — crée la hauteur de scroll pour le 3D ═══ -->
-<div id="scroll-driver"></div>
-
-<!-- ═══════════════════════════════════════════════════
-     OVERLAYS FIXES (apparaissent sur le canvas 3D)
-════════════════════════════════════════════════════ -->
-
-<!-- OV 1 : ENTRÉE -->
-<div class="ov" id="ov-hero">
-  <div class="ov-center">
-    <p class="hero-eyebrow">Restaurant à Lille</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Restaurant à Lille · 30 rue Gosselet</p>
     <h1 class="hero-title">Arcadia</h1>
-    <p class="hero-sub">Cuisine locale · Frais · Fait maison</p>
+    <p class="hero-sub">Cuisine locale · Frais · Fait maison · De saison</p>
     <div class="hero-rule"></div>
     <div class="hero-cta">
       <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
       <a href="menu.html" class="btn btn-outline"><span>Voir la carte</span></a>
     </div>
-    <div class="hero-scroll-indicator" style="margin-top:48px;">
+    <div class="hero-scroll-indicator">
       <div class="scroll-line-anim"></div>
-      <span class="scroll-label">Entrer</span>
+      <span class="scroll-label">Découvrir</span>
     </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Local</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Inclusif</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Sincère</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Local</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Inclusif</span><span class="marquee-item marquee-sep">✦</span>
+    <span class="marquee-item">Sincère</span><span class="marquee-item marquee-sep">✦</span>
   </div>
 </div>
 
-<!-- OV 2 : LA SALLE -->
-<div class="ov ov-bottom-left" id="ov-salle">
-  <div class="glass-panel">
-    <div class="eyebrow">La salle</div>
-    <h2 class="display-title" style="font-size:clamp(36px,4vw,56px);">Une cuisine<br><em>honnête</em></h2>
-    <div class="warm-line"></div>
-    <p style="font-size:14px;color:rgba(245,240,232,0.6);line-height:1.9;max-width:340px;margin-top:12px;">
-      Chez Arcadia, on cuisine ce que la saison nous offre.<br>
-      Produits locaux, transformés avec soin. Une carte courte qui change.
-    </p>
-    <a href="menu.html" class="btn btn-outline" style="margin-top:28px;"><span>Découvrir la carte</span> <span class="btn-arrow">→</span></a>
+<!-- NOTRE PHILOSOPHIE -->
+<section class="section section-dark2">
+  <div class="reveal">
+    <p class="eyebrow">Notre philosophie</p>
+    <h2 class="display-title">Une cuisine<br><em>sincère</em></h2>
   </div>
-</div>
-
-<!-- OV 3 : LA CARTE -->
-<div class="ov ov-right" id="ov-carte">
-  <div class="glass-panel">
-    <div class="eyebrow">À la carte</div>
-    <h2 class="display-title" style="font-size:clamp(32px,3.5vw,48px);">Quelques<br><em>incontournables</em></h2>
-    <div class="warm-line"></div>
-    <div class="ov-plats" id="ov-plats-container">
-      <!-- Chargé dynamiquement depuis la carte via main.js -->
+  <div class="philo-grid">
+    <div class="philo-card">
+      <div class="philo-num">01</div>
+      <h3 class="philo-titre">Local</h3>
+      <p class="philo-desc">Nos producteurs sont nos voisins. On travaille avec des maraîchers, éleveurs et artisans du Nord. Ce qu'on ne trouve pas localement, on le choisit avec soin auprès de distributeurs de confiance.</p>
     </div>
-    <a href="menu.html" class="btn btn-warm" style="margin-top:24px;"><span>Carte complète</span> <span class="btn-arrow">→</span></a>
-  </div>
-</div>
-
-<!-- OV 4 : EN CHIFFRES -->
-<div class="ov" id="ov-stats">
-  <div class="ov-stats-grid">
-    <div class="ov-stat">
-      <div class="ov-stat-num" data-target="100" data-suffix="%">100%</div>
-      <div class="ov-stat-label">Fait maison</div>
+    <div class="philo-card">
+      <div class="philo-num">02</div>
+      <h3 class="philo-titre">De saison</h3>
+      <p class="philo-desc">La carte change avec les arrivages. Ce qui est bon aujourd'hui ne sera peut-être plus là demain. Une courte carte qui tourne, parce qu'une cuisine vivante ne se répète pas.</p>
     </div>
-    <div class="ov-stat">
-      <div class="ov-stat-num" data-target="5" data-suffix="">5</div>
-      <div class="ov-stat-label">Ans à Lille</div>
-    </div>
-    <div class="ov-stat">
-      <div class="ov-stat-num" data-target="0" data-suffix="">0</div>
-      <div class="ov-stat-label">Plats congelés</div>
-    </div>
-    <div class="ov-stat">
-      <div class="ov-stat-num">∞</div>
-      <div class="ov-stat-label">Passion</div>
+    <div class="philo-card">
+      <div class="philo-num">03</div>
+      <h3 class="philo-titre">Inclusif</h3>
+      <p class="philo-desc">Une table accessible à tous, sans dogme ni hiérarchie. Menu végétarien, sans gluten ou adapté sur demande. Chez Arcadia, tout le monde trouve sa place.</p>
     </div>
   </div>
-</div>
+</section>
 
-<!-- OV 5 : BAR & HORAIRES -->
-<div class="ov ov-bottom-right" id="ov-bar">
-  <div class="glass-panel">
-    <div class="eyebrow">Horaires</div>
-    <div class="horaires-list" data-bf="horaires" style="margin-top:16px;">
-      <div class="h-row"><span class="h-jour">Lun</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Mar</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Mer</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Jeu</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Ven</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Sam</span><span class="h-heure" style="opacity:.25;">…</span></div>
-      <div class="h-row"><span class="h-jour">Dim</span><span class="h-heure" style="opacity:.25;">…</span></div>
-    </div>
-    <div style="margin-top:20px;font-size:13px;color:rgba(245,240,232,0.45);" data-bf="adresse">Lille</div>
-    <div style="font-size:13px;color:rgba(245,240,232,0.45);"><a href="#" data-bf="telephone" style="color:inherit;text-decoration:none;">—</a></div>
+<!-- APERÇU DE LA CARTE -->
+<section class="section section-dark">
+  <div style="max-width:680px;margin:0 auto;text-align:center;" class="reveal">
+    <p class="eyebrow">À la carte</p>
+    <h2 class="display-title">Quelques<br><em>incontournables</em></h2>
+    <div class="warm-line" style="margin:24px auto;"></div>
+    <p class="section-intro" style="margin:0 auto;">La carte change au fil des saisons. Voici un aperçu de ce qu'on cuisine en ce moment.</p>
   </div>
-</div>
-
-<!-- OV 6 : RÉSERVATION CTA -->
-<div class="ov" id="ov-resa">
-  <div class="ov-center" style="text-align:center;">
-    <p class="hero-eyebrow">Votre table vous attend</p>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,100px);font-weight:300;font-style:italic;color:var(--creme);line-height:1;margin-bottom:48px;">
-      Une table<br><em style="color:var(--bois);">ce soir ?</em>
-    </h2>
-    <a href="reservation.html" class="btn btn-warm" style="padding:20px 56px;font-size:11px;">
-      <span>Réserver maintenant</span> <span class="btn-arrow">→</span>
-    </a>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     CONTENU NORMAL (après l'expérience 3D)
-════════════════════════════════════════════════════ -->
-<div id="regular-content">
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Local</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Sincère</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Frais</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Fait maison</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">De saison</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Local</span><span class="marquee-item marquee-sep">✦</span>
-      <span class="marquee-item">Sincère</span><span class="marquee-item marquee-sep">✦</span>
+  <div class="featured-plats">
+    <div id="ov-plats-container">
+      <!-- Chargé depuis l'API Burstflow via main.js -->
     </div>
   </div>
+  <div class="featured-cta reveal">
+    <a href="menu.html" class="btn btn-warm"><span>Voir la carte complète</span> <span class="btn-arrow">→</span></a>
+  </div>
+</section>
 
-  <!-- ÉVÉNEMENTS -->
-  <section class="s-events section section-dark">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;" class="reveal">
-      <div>
-        <div class="eyebrow">Agenda</div>
-        <h2 class="section-title">Événements <em>à venir</em></h2>
-      </div>
-      <a href="evenements.html" class="btn btn-outline" style="margin-bottom:4px;"><span>Tous les événements</span> <span class="btn-arrow">→</span></a>
-    </div>
-    <div id="bf-evenements" class="events-grid" style="margin-top:56px;"></div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="footer-logo">Arcadia</div>
-        <p>Cuisine fraîche, locale et de saison.<br>Frais · Fait maison · De saison.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="menu.html">Menu</a></li>
-          <li><a href="evenements.html">Événements</a></li>
-          <li><a href="reservation.html">Réservation</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="#" data-bf="telephone">Téléphone</a></li>
-          <li><a href="#" data-bf="email">Email</a></li>
-          <li><span data-bf="adresse" style="color:rgba(245,240,232,0.4);font-size:13px;">Adresse</span></li>
-        </ul>
+<!-- À PROPOS -->
+<section class="section section-dark2">
+  <div class="about-grid">
+    <div class="about-content reveal">
+      <span class="about-badge">Ouvert en décembre 2025</span>
+      <p class="eyebrow">Qui sommes-nous</p>
+      <h2 class="section-title">Deux cuisiniers,<br>une <em>même vision</em></h2>
+      <div class="warm-line"></div>
+      <p class="section-intro">
+        Arcadia est né d'une envie simple : cuisiner bien, avec honnêteté. Une carte courte qui change,
+        des produits qu'on connaît, des saveurs qu'on assume. Pas de chichi, pas de compromis.
+      </p>
+      <div class="about-founders">
+        <div class="founder">
+          <strong>Elisa Coutel</strong>
+          Cheffe de cuisine
+        </div>
+        <div class="founder">
+          <strong>Hadrien Fruchaud</strong>
+          En salle & direction
+        </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 Arcadia · Tous droits réservés</p>
-      <a href="https://www.burstflow.fr" target="_blank" rel="noopener">Propulsé par Burstflow</a>
+    <div class="reveal" style="transition-delay:.15s;">
+      <div class="stats-grid" style="grid-template-columns:1fr 1fr;margin-top:0;">
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Fait maison</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Plats congelés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Passion</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">Nord</div>
+          <div class="stat-label">Ancrage local</div>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+</section>
 
-</div><!-- /regular-content -->
+<!-- HORAIRES & INFOS -->
+<section class="section section-dark">
+  <div class="horaires-wrap">
+    <div class="reveal">
+      <p class="eyebrow">Nous trouver</p>
+      <h2 class="section-title">Venez nous <em>rendre visite</em></h2>
+      <div class="warm-line"></div>
+      <div class="infos-list">
+        <div class="info-row">
+          <span class="info-row-icon">📍</span>
+          <div>
+            <div class="info-row-label">Adresse</div>
+            <div class="info-row-val" data-bf="adresse">30 rue Gosselet, 59000 Lille</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-row-icon">📞</span>
+          <div>
+            <div class="info-row-label">Téléphone</div>
+            <div class="info-row-val"><a href="tel:0320429602" data-bf="telephone">03 20 42 96 02</a></div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-row-icon">✉️</span>
+          <div>
+            <div class="info-row-label">Email</div>
+            <div class="info-row-val"><a href="#" data-bf="email">—</a></div>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-row-icon">📸</span>
+          <div>
+            <div class="info-row-label">Instagram</div>
+            <div class="info-row-val"><a href="https://www.instagram.com/arcadia.lille" target="_blank" rel="noopener">@arcadia.lille</a></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:36px;">
+        <a href="reservation.html" class="btn btn-warm"><span>Réserver une table</span> <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s;">
+      <p class="eyebrow">Horaires</p>
+      <h2 class="section-title">Quand nous <em>trouver</em> ?</h2>
+      <div class="warm-line"></div>
+      <div class="horaires-list" data-bf="horaires">
+        <div class="h-row"><span class="h-jour">Lun</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Mar</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Mer</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Jeu</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Ven</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Sam</span><span class="h-heure" style="opacity:.25;">…</span></div>
+        <div class="h-row"><span class="h-jour">Dim</span><span class="h-heure" style="opacity:.25;">…</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- Import map Three.js modules (pour post-processing bloom) -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-<!-- GSAP -->
+<!-- ÉVÉNEMENTS -->
+<section class="section section-dark2">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;" class="reveal">
+    <div>
+      <p class="eyebrow">Agenda</p>
+      <h2 class="section-title">Événements <em>à venir</em></h2>
+    </div>
+    <a href="evenements.html" class="btn btn-outline" style="margin-bottom:4px;"><span>Tous les événements</span> <span class="btn-arrow">→</span></a>
+  </div>
+  <div id="bf-evenements" class="events-grid"></div>
+</section>
+
+<!-- CTA RÉSERVATION -->
+<section class="s-resa-cta">
+  <div class="bg-word">Arcadia</div>
+  <p class="cta-eyebrow reveal">Votre table vous attend</p>
+  <h2 class="cta-title reveal">Une table<br><em>ce soir ?</em></h2>
+  <a href="reservation.html" class="btn btn-warm reveal" style="padding:20px 56px;font-size:11px;">
+    <span>Réserver maintenant</span> <span class="btn-arrow">→</span>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Arcadia</div>
+      <p>Cuisine fraîche, locale et de saison.<br>30 rue Gosselet, 59000 Lille.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="evenements.html">Événements</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:0320429602" data-bf="telephone">03 20 42 96 02</a></li>
+        <li><a href="#" data-bf="email">Email</a></li>
+        <li><span data-bf="adresse" style="color:rgba(244,242,236,0.4);font-size:13px;">30 rue Gosselet, Lille</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Arcadia · Tous droits réservés</p>
+    <a href="https://www.burstflow.fr" target="_blank" rel="noopener">Propulsé par Burstflow</a>
+  </div>
+</footer>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
-<script type="module" src="scene.js"></script>
 <script src="animations.js"></script>
 </body>
 </html>
