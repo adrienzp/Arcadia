@@ -77,10 +77,12 @@
 
     // Reveals génériques sur la homepage
     document.querySelectorAll('.reveal').forEach(function (el) {
-      gsap.from(el, {
-        y: 40, opacity: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 84%' }
-      });
+      gsap.fromTo(el,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 84%' }
+        }
+      );
     });
 
     // Philo cards
