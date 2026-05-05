@@ -78,6 +78,11 @@ nav.scrolled {
   text-align: center; position: relative; overflow: hidden;
   background: var(--terre);
 }
+.hero-photo-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-position: center;
+  opacity: .18;
+}
 .hero-bg {
   position: absolute; inset: 0;
   background:
