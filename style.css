@@ -326,6 +326,24 @@ nav.scrolled {
 .btn-ghost::before { background: rgba(28,20,16,.05); }
 
 /* ── EVENTS ── */
+/* ── GALERIE ─────────────────────────────────────────────── */
+.galerie-section { background: var(--terre); padding: 0; }
+.galerie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 280px;
+  gap: 3px;
+}
+.galerie-item { overflow: hidden; }
+.galerie-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+  display: block;
+}
+.galerie-item:hover img { transform: scale(1.06); }
+.galerie-large { grid-column: span 2; }
+
 .events-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; margin-top: 60px; }
 .event-card { position: relative; overflow: hidden; }
 .event-img-wrap, .event-img { width: 100%; aspect-ratio: 16/9; overflow: hidden; }
@@ -552,5 +570,7 @@ footer { background: var(--noir2); padding: 80px 80px 40px; border-top: 1px soli
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   .hero-logo-img { width: min(85vw, 460px); }
   .events-grid { grid-template-columns: 1fr; }
+  .galerie-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 200px; }
+  .galerie-large { grid-column: span 2; }
   .about-founders { flex-direction: column; gap: 16px; }
 }
