@@ -358,7 +358,7 @@ async function loadEvenements() {
     const events = data.events || [];
 
     if (events.length === 0) {
-      container.innerHTML = '<p style="color:var(--texte-doux);font-size:14px;text-align:center;padding:40px 0;">Aucun événement à venir pour le moment.</p>';
+      container.innerHTML = '<p style="color:var(--creme);opacity:.55;font-size:14px;text-align:center;padding:60px 0;letter-spacing:.05em;">Aucun événement à venir pour le moment.</p>';
       return;
     }
 
@@ -367,7 +367,7 @@ async function loadEvenements() {
       const dateStr = debut.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
       const heureStr = debut.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-      return '<div class="event-card reveal">' +
+      return '<div class="event-card">' +
         (ev.image_url ? '<div class="event-img"><img src="' + ev.image_url + '" alt="' + ev.title + '" loading="lazy"></div>' : '') +
         '<div class="event-body">' +
           '<div class="event-date">' + dateStr + ' à ' + heureStr + '</div>' +
